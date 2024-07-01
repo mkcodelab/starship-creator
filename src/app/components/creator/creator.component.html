@@ -1,0 +1,17 @@
+<div class="flex">
+
+    <div class="flex flex-col bg-neutral-400">
+        <button class="p-2 bg-neutral-600 m-1"
+                (click)="toggleAnim()">toggleAnim</button>
+        <div class="bg-neutral-600">
+            <input #spotlightY
+                   type="range"
+                   min="0"
+                   max="10"
+                   step="0.1"
+                   (input)="moveSpotlight(+spotlightY.value)">
+        </div>
+    </div>
+    <engine></engine>
+
+</div>
