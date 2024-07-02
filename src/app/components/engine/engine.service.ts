@@ -6,12 +6,11 @@ import {
   inject,
 } from '@angular/core';
 import * as THREE from 'three';
-import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls';
+// import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { StarshipModel } from '../starship/starship';
-import { Lights } from '../lights/lights';
 import { MainScene } from '../main-scene/main-scene';
 
+// figure out how to get dynamic component size
 export const ScreenSize = {
   width: 800,
   height: 600,
@@ -24,30 +23,16 @@ export const ScreenSize = {
 export class EngineService implements OnDestroy {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
-  private camera: THREE.PerspectiveCamera;
-  private scene: THREE.Scene;
-
   private mainScene: MainScene;
 
-  private lights: Lights;
-
-  private arcBallControls: ArcballControls;
+  //   private arcBallControls: ArcballControls;
   private orbitControls: OrbitControls;
-
-  private basePlate: THREE.Mesh;
 
   public cubeRotation = true;
 
   private frameId: number = 0;
 
   private ngZone = inject(NgZone);
-
-  width = 800;
-  height = 600;
-
-  get aspect() {
-    return this.width / this.height;
-  }
 
   public ngOnDestroy(): void {
     if (this.frameId != null) {
@@ -66,38 +51,16 @@ export class EngineService implements OnDestroy {
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      alpha: true, // transparent background
-      antialias: true, // smooth edges
+      alpha: true,
+      antialias: true,
     });
-    this.renderer.setSize(this.width, this.height);
+    this.renderer.setSize(ScreenSize.width, ScreenSize.height);
     this.renderer.setClearColor(0x666666);
 
     // create the scene
     this.mainScene = new MainScene();
 
-    this.scene = new THREE.Scene();
-
-    this.camera = new THREE.PerspectiveCamera(75, this.aspect, 0.1, 1000);
-    this.camera.position.set(5, 5, 5);
-
-    // this.initArcballControls();
     this.initOrbitControls();
-
-    this.scene.add(this.camera);
-
-    const axesHelper = new THREE.AxesHelper(5);
-    this.scene.add(axesHelper);
-
-    this.lights = new Lights();
-    this.scene.add(this.lights.lightsGroup);
-
-    const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
-    const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
-    this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
-    this.scene.add(this.basePlate);
-
-    // adding starship
-    this.addStarship();
   }
 
   public animate(): void {
@@ -122,47 +85,29 @@ export class EngineService implements OnDestroy {
     this.frameId = requestAnimationFrame(() => {
       this.render();
     });
-    this.update();
-    this.renderer.render(this.scene, this.camera);
-    // this.renderer.render(this.mainScene.scene, this.mainScene.camera);
-  }
 
-  public update(): void {
-    if (this.cubeRotation) {
-      //   this.cube.rotation.z += 0.1;
-      this.basePlate.rotation.y += 0.01;
-    }
+    this.mainScene.update();
+    this.renderer.render(this.mainScene.scene, this.mainScene.camera);
   }
 
   public resize(): void {
-    this.camera.aspect = this.width / this.height;
-    this.camera.updateProjectionMatrix();
-    // this.mainScene.resize();
+    this.mainScene.resize();
     this.renderer.setSize(ScreenSize.width, ScreenSize.height);
   }
 
-  initArcballControls() {
-    this.arcBallControls = new ArcballControls(
-      this.camera,
-      this.canvas,
-      this.scene
-    );
-  }
+  //   initArcballControls() {
+  //     this.arcBallControls = new ArcballControls(
+  //       this.camera,
+  //       this.canvas,
+  //       this.scene
+  //     );
+  //   }
 
   initOrbitControls() {
-    this.orbitControls = new OrbitControls(this.camera, this.canvas);
-    // this.orbitControls = new OrbitControls(this.mainScene.camera, this.canvas);
+    this.orbitControls = new OrbitControls(this.mainScene.camera, this.canvas);
   }
 
   moveSpotlight(value: number) {
-    this.lights.moveSpotlight(value);
-  }
-
-  addStarship() {
-    const starship = new StarshipModel();
-    starship.createTestHull();
-    starship.addMainEngine();
-    this.scene.add(starship.group);
-    starship.group.position.y = 1;
+    this.mainScene.moveSpotlight(value);
   }
 }

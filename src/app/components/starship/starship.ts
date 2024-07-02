@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { Hull } from './parts/hull/hull';
 import { MainEngine } from './parts/mainEngine/mainEngine';
-// Hull | Tail | Wings | etc
-export type StarshipElement = Hull | MainEngine;
+import { StarshipPart } from './parts/abstract.shipPart';
 
 export class StarshipModel {
   // complete starship
@@ -13,20 +12,16 @@ export class StarshipModel {
 
   addHull(hull: Hull) {
     this.hull = hull;
-  }
-
-  addToGroup(element: StarshipElement) {
-    this.group.add(element.mesh);
-  }
-
-  createTestHull() {
-    this.hull = new Hull();
     this.group.add(this.hull.mesh);
   }
 
+  addToGroup(element: StarshipPart) {
+    this.group.add(element.mesh);
+  }
+
   //   add mainEngineSelected as param, selectable from ui list
-  addMainEngine() {
-    this.mainEngine = new MainEngine();
+  addMainEngine(mainEngine: MainEngine) {
+    this.mainEngine = mainEngine;
 
     const attachPoint = this.hull.mainEngineAttachPoint;
 
@@ -37,5 +32,9 @@ export class StarshipModel {
     );
     this.mainEngine.mesh.rotateX(THREE.MathUtils.degToRad(90));
     this.group.add(this.mainEngine.mesh);
+  }
+
+  logParts() {
+    console.log(this.hull.name, this.mainEngine.name);
   }
 }

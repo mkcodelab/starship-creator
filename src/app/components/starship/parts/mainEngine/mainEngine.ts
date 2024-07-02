@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-export class MainEngine {
+import { StarshipPart } from '../abstract.shipPart';
+
+export class MainEngine extends StarshipPart {
   geom = new THREE.CylinderGeometry(0.5, 0.5, 0.5);
 
   material = new THREE.MeshPhongMaterial({
