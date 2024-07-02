@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { Hull } from './parts/hull/hull';
 import { MainEngine } from './parts/mainEngine/mainEngine';
 import { StarshipPart } from './parts/abstract.shipPart';
+import { SideEngines } from './parts/sideEngine/sideEngine';
 
 export class StarshipModel {
   // complete starship
-  public group = new THREE.Group();
+  group = new THREE.Group();
 
   hull: Hull;
   mainEngine: MainEngine;
+  sideEngines: SideEngines;
 
   addHull(hull: Hull) {
     this.hull = hull;
@@ -19,22 +21,31 @@ export class StarshipModel {
     this.group.add(element.mesh);
   }
 
-  //   add mainEngineSelected as param, selectable from ui list
   addMainEngine(mainEngine: MainEngine) {
     this.mainEngine = mainEngine;
 
-    const attachPoint = this.hull.mainEngineAttachPoint;
-
-    this.mainEngine.mesh.position.set(
-      attachPoint.x,
-      attachPoint.y,
-      attachPoint.z
-    );
-    this.mainEngine.mesh.rotateX(THREE.MathUtils.degToRad(90));
+    const [x, y, z] = this.hull.mainEngineAttachPoint;
+    this.mainEngine.mesh.position.set(x, y, z);
     this.group.add(this.mainEngine.mesh);
   }
 
   logParts() {
     console.log(this.hull.name, this.mainEngine.name);
+  }
+
+  addSideEngines(sideEngines: SideEngines) {
+    this.sideEngines = sideEngines;
+    const [x, y, z] = this.hull.sideEngineAttachPoint;
+    this.group.add(this.sideEngines.mesh);
+    this.sideEngines.mesh.position.set(x, y, z);
+  }
+
+  moveSideEngines(y: number, z: number) {
+    if (y !== 0) {
+      this.sideEngines.mesh.position.y = y;
+    }
+    if (z !== 0) {
+      this.sideEngines.mesh.position.z = z;
+    }
   }
 }

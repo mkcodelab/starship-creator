@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { EngineComponent } from '../engine/engine.component';
 import { EngineService } from '../engine/engine.service';
+import { CreatorService } from './creator.service';
 
 @Component({
   standalone: true,
@@ -9,6 +10,7 @@ import { EngineService } from '../engine/engine.service';
   imports: [EngineComponent],
 })
 export class CreatorComponent {
+  creatorSvc = inject(CreatorService);
   engineSvc = inject(EngineService);
 
   toggleAnim() {
@@ -17,5 +19,9 @@ export class CreatorComponent {
 
   moveSpotlight(value: number) {
     this.engineSvc.moveSpotlight(value);
+  }
+
+  moveSideEngine(y: number, z: number) {
+    this.creatorSvc.moveSideEngine(y, z);
   }
 }

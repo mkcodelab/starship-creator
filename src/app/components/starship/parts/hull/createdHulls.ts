@@ -5,4 +5,17 @@ export const StandardHull = new Hull({
   name: 'Standard Hull',
   hpModifier: 10,
   geom: new THREE.BoxGeometry(1, 1, 4),
+  material: new THREE.MeshPhongMaterial({
+    color: 0xcccccc,
+  }),
+});
+
+export const ImprovedHull = new Hull({
+  name: 'Improved Hull',
+  hpModifier: 50,
+  geom: new THREE.BoxGeometry(1, 2, 4),
+  material: new THREE.MeshPhongMaterial({
+    color: 0xeeeeee,
+    shininess: 0.8,
+  }),
 });

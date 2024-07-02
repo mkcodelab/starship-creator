@@ -23,7 +23,8 @@ export const ScreenSize = {
 export class EngineService implements OnDestroy {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
-  private mainScene: MainScene;
+  //   private mainScene: MainScene;
+  private mainScene = inject(MainScene);
 
   //   private arcBallControls: ArcballControls;
   private orbitControls: OrbitControls;
@@ -58,7 +59,7 @@ export class EngineService implements OnDestroy {
     this.renderer.setClearColor(0x666666);
 
     // create the scene
-    this.mainScene = new MainScene();
+    // this.mainScene = new MainScene();
 
     this.initOrbitControls();
   }

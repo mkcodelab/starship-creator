@@ -21,6 +21,25 @@
             <button class="p-2 bg-neutral-600 m-1">Add Engine</button>
 
         </div>
+        <!-- side engines position -->
+        <div>
+            <p>side engine position</p>
+            <label [for]="sideEngineY">Y pos</label>
+            <input #sideEngineY
+                   type="range"
+                   min="-1"
+                   max="1"
+                   step="0.1"
+                   (input)="moveSideEngine(+sideEngineY.value, 0)">
+
+            <label [for]="sideEngineZ">Z pos</label>
+            <input #sideEngineZ
+                   type="range"
+                   min="-1"
+                   max="1"
+                   step="0.1"
+                   (input)="moveSideEngine(0, +sideEngineZ.value)">
+        </div>
     </div>
     <!-- renderer window -->
     <engine></engine>

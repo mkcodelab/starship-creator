@@ -2,8 +2,19 @@ import * as THREE from 'three';
 import { ScreenSize } from '../engine/engine.service';
 import { StarshipModel } from '../starship/starship';
 import { Lights } from '../lights/lights';
-import { StandardHull } from '../starship/parts/hull/createdHulls';
+import {
+  ImprovedHull,
+  StandardHull,
+} from '../starship/parts/hull/createdHulls';
 import { StandardMainEngine } from '../starship/parts/mainEngine/createdMainEngines';
+import { StandardSideEngine } from '../starship/parts/sideEngine/createdSideEngines';
+import { Injectable, inject } from '@angular/core';
+import { CreatorService } from '../creator/creator.service';
+
+// maybe make it as singleton?
+@Injectable({
+  providedIn: 'root',
+})
 export class MainScene {
   scene = new THREE.Scene();
 
@@ -16,6 +27,8 @@ export class MainScene {
   camera = new THREE.PerspectiveCamera(75, ScreenSize.aspect, 0.1, 1000);
 
   starshipModel: StarshipModel;
+
+  creatorSvc = inject(CreatorService);
 
   constructor() {
     this.camera.position.set(5, 5, 5);
@@ -34,6 +47,11 @@ export class MainScene {
 
     // adding starship
     this.addStarship();
+
+    // here we will subscribe to the creator.service events
+    this.creatorSvc.moveSideEngineEvent$.subscribe((data) => {
+      this.starshipModel.moveSideEngines(data.y, data.z);
+    });
   }
 
   resize() {
@@ -43,9 +61,10 @@ export class MainScene {
 
   addStarship() {
     this.starshipModel = new StarshipModel();
-    // starship.createTestHull(StandardHull);
     this.starshipModel.addHull(StandardHull);
+    // this.starshipModel.addHull(ImprovedHull);
     this.starshipModel.addMainEngine(StandardMainEngine);
+    this.starshipModel.addSideEngines(StandardSideEngine);
     this.scene.add(this.starshipModel.group);
     // move whole ship a bit higher
     this.starshipModel.group.position.y = 1;
@@ -58,7 +77,7 @@ export class MainScene {
       this.basePlate.rotation.y += 0.01;
     }
 
-    this.starshipModel.group.rotation.y -= 0.01;
+    // this.starshipModel.group.rotation.y -= 0.01;
   }
 
   moveSpotlight(value: number) {

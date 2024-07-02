@@ -4,20 +4,21 @@ import { ShipPartConfig, StarshipPart } from '../abstract.shipPart';
 export interface HullConfig extends ShipPartConfig {
   hpModifier: number;
   geom: THREE.BufferGeometry;
+  material: THREE.Material;
 }
 
 export class Hull extends StarshipPart {
-  //   geom = new THREE.BoxGeometry(1, 1, 4);
   geom: THREE.BufferGeometry;
 
-  material = new THREE.MeshPhongMaterial({
-    color: 0xccffaa,
-  });
-
+  material: THREE.Material;
   mesh: THREE.Mesh;
 
-  //   attach points
+  mass = 200;
+
+  //   attach points, i guess we need to define them separately for every hull created...
   mainEngineAttachPoint = new THREE.Vector3(0, 0, -2);
+
+  sideEngineAttachPoint = new THREE.Vector3(0, 0, -1);
 
   //   stats
   baseHP = 100;
@@ -26,6 +27,7 @@ export class Hull extends StarshipPart {
     super(hullConfig);
     this.baseHP += hullConfig.hpModifier;
     this.geom = hullConfig.geom;
+    this.material = hullConfig.material;
     this.mesh = new THREE.Mesh(this.geom, this.material);
   }
 }

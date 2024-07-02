@@ -1,8 +1,10 @@
 import * as THREE from 'three';
-import { StarshipPart } from '../abstract.shipPart';
+import { ShipPartConfig, StarshipPart } from '../abstract.shipPart';
 
 export class MainEngine extends StarshipPart {
   geom = new THREE.CylinderGeometry(0.5, 0.5, 0.5);
+
+  mass = 50;
 
   material = new THREE.MeshPhongMaterial({
     color: 0xccccff,
@@ -10,4 +12,9 @@ export class MainEngine extends StarshipPart {
   });
 
   mesh = new THREE.Mesh(this.geom, this.material);
+
+  constructor(config: ShipPartConfig) {
+    super(config);
+    this.mesh.rotateX(THREE.MathUtils.degToRad(90));
+  }
 }
