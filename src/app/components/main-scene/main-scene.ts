@@ -2,14 +2,12 @@ import * as THREE from 'three';
 import { ScreenSize } from '../engine/engine.service';
 import { StarshipModel } from '../starship/starship';
 import { Lights } from '../lights/lights';
-import {
-  ImprovedHull,
-  StandardHull,
-} from '../starship/parts/hull/createdHulls';
-import { StandardMainEngine } from '../starship/parts/mainEngine/createdMainEngines';
-import { StandardSideEngine } from '../starship/parts/sideEngine/createdSideEngines';
+
 import { Injectable, inject } from '@angular/core';
 import { CreatorService } from '../creator/creator.service';
+import { Hull } from '../starship/parts/hull/hull';
+import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
+import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
 
 // maybe make it as singleton?
 @Injectable({
@@ -37,20 +35,36 @@ export class MainScene {
     const axesHelper = new THREE.AxesHelper(5);
     this.scene.add(axesHelper);
 
+    this.createSkybox();
+
     this.lights = new Lights();
     this.scene.add(this.lights.lightsGroup);
 
-    const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
-    const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
-    this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
-    this.scene.add(this.basePlate);
+    this.createBasePlate();
 
     // adding starship
     this.addStarship();
 
+    // maybe we can use merge, to merge all the events together, and then in subscribe callback
+    // do the branching
     // here we will subscribe to the creator.service events
     this.creatorSvc.moveSideEngineEvent$.subscribe((data) => {
       this.starshipModel.moveSideEngines(data.y, data.z);
+    });
+
+    this.creatorSvc.creatorServiceEvents$.subscribe((data) => {
+      console.log('data from merged observables', data);
+
+      switch (true) {
+        case data instanceof Hull:
+          this.addHull(data);
+          break;
+        case data instanceof SideEngines:
+          this.addSideEngines(data);
+          break;
+        default:
+          console.warn('unrecognized action!');
+      }
     });
   }
 
@@ -61,20 +75,29 @@ export class MainScene {
 
   addStarship() {
     this.starshipModel = new StarshipModel();
-    this.starshipModel.addHull(StandardHull);
-    // this.starshipModel.addHull(ImprovedHull);
-    this.starshipModel.addMainEngine(StandardMainEngine);
-    this.starshipModel.addSideEngines(StandardSideEngine);
+    // this.starshipModel.addMainEngine(StandardMainEngine);
     this.scene.add(this.starshipModel.group);
     // move whole ship a bit higher
     this.starshipModel.group.position.y = 1;
+  }
+
+  addHull(hull: Hull) {
+    this.starshipModel.addHull(hull);
+  }
+
+  addMainEngine(mainEngine: MainEngine) {
+    this.starshipModel.addMainEngine(mainEngine);
+  }
+
+  addSideEngines(sideEngines: SideEngines) {
+    this.starshipModel.addSideEngines(sideEngines);
   }
 
   update() {
     // showcase rotation
     if (this.cubeRotation) {
       //   this.cube.rotation.z += 0.1;
-      this.basePlate.rotation.y += 0.01;
+      //   this.basePlate.rotation.y += 0.01;
     }
 
     // this.starshipModel.group.rotation.y -= 0.01;
@@ -82,5 +105,31 @@ export class MainScene {
 
   moveSpotlight(value: number) {
     this.lights.moveSpotlight(value);
+  }
+
+  createBasePlate() {
+    const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
+    const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
+    this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
+    this.scene.add(this.basePlate);
+  }
+
+  createSkybox() {
+    const loader = new THREE.CubeTextureLoader();
+    loader.setPath('assets/textures/skybox/');
+
+    const textureCube = loader.load([
+      'arid2_ft.jpg',
+      'arid2_bk.jpg',
+
+      'arid2_up.jpg',
+      'arid2_dn.jpg',
+
+      'arid2_rt.jpg',
+      'arid2_lf.jpg',
+    ]);
+
+    this.scene.background = textureCube;
+    // we can use it to add envMap to MeshBasicMaterials
   }
 }

@@ -11,7 +11,7 @@ export class Lights {
   }
 
   initLights() {
-    this.light = new THREE.AmbientLight(0x444444);
+    this.light = new THREE.AmbientLight(0xffffff, 0.5);
     this.light.position.z = 10;
 
     this.spotLight = new THREE.SpotLight(0xffffff, 1, 5, 15, 0.2, 1.5);
@@ -21,12 +21,12 @@ export class Lights {
 
     this.spotLight.lookAt(0, 0, 0);
 
-    this.lightsGroup.add(this.light, this.spotLight, this.spotlightHelper);
+    this.lightsGroup.add(this.light, this.spotLight);
   }
 
   moveSpotlight(value: number) {
     this.spotLight.position.y = value;
     // does not work?
-    this.spotlightHelper.position.y = value;
+    // this.spotlightHelper.position.y = value;
   }
 }

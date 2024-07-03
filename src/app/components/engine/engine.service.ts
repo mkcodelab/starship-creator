@@ -56,7 +56,8 @@ export class EngineService implements OnDestroy {
       antialias: true,
     });
     this.renderer.setSize(ScreenSize.width, ScreenSize.height);
-    this.renderer.setClearColor(0x666666);
+
+    this.renderer.setClearColor(0xbdac7e);
 
     // create the scene
     // this.mainScene = new MainScene();

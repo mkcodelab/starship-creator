@@ -7,6 +7,8 @@ export interface HullConfig extends ShipPartConfig {
   material: THREE.Material;
 }
 
+export type ModificationFn = () => void;
+
 export class Hull extends StarshipPart {
   geom: THREE.BufferGeometry;
 
@@ -22,12 +24,24 @@ export class Hull extends StarshipPart {
 
   //   stats
   baseHP = 100;
-
-  constructor(hullConfig: HullConfig) {
+  // add modification function for different geometries
+  //    example: to rotate cylindrical shaped hull
+  constructor(hullConfig: HullConfig, rotate?: boolean) {
     super(hullConfig);
     this.baseHP += hullConfig.hpModifier;
     this.geom = hullConfig.geom;
     this.material = hullConfig.material;
     this.mesh = new THREE.Mesh(this.geom, this.material);
+    // if (modificationFn) {
+    //   modificationFn();
+    // }
+
+    if (rotate) {
+      this.rotate();
+    }
+  }
+  // maybe move it to ship part abstract class?
+  rotate() {
+    this.mesh.rotateX(THREE.MathUtils.degToRad(90));
   }
 }

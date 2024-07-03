@@ -19,3 +19,17 @@ export const ImprovedHull = new Hull({
     shininess: 0.8,
   }),
 });
+export const HexHull = new Hull(
+  {
+    name: 'Hex Hull',
+    hpModifier: 50,
+    geom: new THREE.CylinderGeometry(1, 1.2, 4, 6),
+    material: new THREE.MeshPhongMaterial({
+      color: 0xfabfab,
+      shininess: 0.8,
+    }),
+  },
+  true
+);
+
+export const HullsArray = [StandardHull, ImprovedHull, HexHull];
