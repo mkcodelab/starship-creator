@@ -8,6 +8,7 @@ import { CreatorService } from '../creator/creator.service';
 import { Hull } from '../starship/parts/hull/hull';
 import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
 import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
+import { hexHullTextureNormalMap } from '../starship/parts/hull/createdHulls';
 
 // maybe make it as singleton?
 @Injectable({
@@ -32,7 +33,7 @@ export class MainScene {
     this.camera.position.set(5, 5, 5);
     this.scene.add(this.camera);
 
-    const axesHelper = new THREE.AxesHelper(5);
+    const axesHelper = new THREE.AxesHelper(10);
     this.scene.add(axesHelper);
 
     this.createSkybox();
@@ -44,6 +45,10 @@ export class MainScene {
 
     // adding starship
     this.addStarship();
+
+    // testing normalMap generation
+    // there something wrong with this sobel algorithm
+    this.createTestTexturePlane(hexHullTextureNormalMap, 5, 5, 5);
 
     // maybe we can use merge, to merge all the events together, and then in subscribe callback
     // do the branching
@@ -82,6 +87,8 @@ export class MainScene {
   }
 
   addHull(hull: Hull) {
+    // first, clear hull
+    this.starshipModel.removeHull();
     this.starshipModel.addHull(hull);
   }
 
@@ -108,9 +115,11 @@ export class MainScene {
   }
 
   createBasePlate() {
-    const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
+    // const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
+    const basePlateGeometry = new THREE.CylinderGeometry(5, 5.5, 0.2);
     const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
     this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
+    this.basePlate.receiveShadow = true;
     this.scene.add(this.basePlate);
   }
 
@@ -131,5 +140,16 @@ export class MainScene {
 
     this.scene.background = textureCube;
     // we can use it to add envMap to MeshBasicMaterials
+  }
+
+  createTestTexturePlane(texture: any, x: number, y: number, z: number) {
+    const geom = new THREE.PlaneGeometry(5, 5);
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+    });
+
+    const mesh = new THREE.Mesh(geom, material);
+    mesh.position.set(x, y, z);
+    this.scene.add(mesh);
   }
 }

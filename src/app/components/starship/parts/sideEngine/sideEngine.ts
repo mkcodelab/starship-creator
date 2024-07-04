@@ -21,5 +21,7 @@ export class SideEngines extends StarshipPart {
 
     this.geom = sideEnginesConfig.geom;
     this.mesh = new THREE.Mesh(this.geom, this.material);
+    this.mesh.receiveShadow = true;
+    this.mesh.castShadow = true;
   }
 }

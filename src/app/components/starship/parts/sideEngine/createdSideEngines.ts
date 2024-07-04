@@ -9,7 +9,7 @@ export const StandardSideEngine = new SideEngines({
 });
 //   it would be better if every ship part was a separate glb
 //   but for now it will be generated procedurally
-export function generateGeom(): THREE.BufferGeometry {
+function generateGeom(): THREE.BufferGeometry {
   //   width / height/ depth
   //   left engine
   const leftGeom = new THREE.BoxGeometry(0.5, 0.5, 2);

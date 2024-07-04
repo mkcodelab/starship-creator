@@ -5,12 +5,21 @@ import { CreatorService } from './creator.service';
 import { ModalConfig, ModalService } from '../../services/modal.service';
 import { HullsArray } from '../starship/parts/hull/createdHulls';
 import { Hull } from '../starship/parts/hull/hull';
+import { NgClass } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'creator',
   templateUrl: './creator.component.html',
-  imports: [EngineComponent],
+  imports: [EngineComponent, NgClass],
+  styles: `
+    $outline-col: hsl(80, 50%, 50%);
+
+    .part-selected {
+        box-shadow: 0 0 5px 5px $outline-col;
+
+    }
+  `,
 })
 export class CreatorComponent {
   creatorSvc = inject(CreatorService);
@@ -20,6 +29,8 @@ export class CreatorComponent {
   hulls = HullsArray;
 
   selectedHull: Hull | undefined;
+  //   add some prevent mechanism from adding multiple hulls.
+  // there can be only one hull
 
   toggleAnim() {
     this.engineSvc.cubeRotation = !this.engineSvc.cubeRotation;
@@ -53,5 +64,9 @@ export class CreatorComponent {
 
   openModal(template: TemplateRef<any>, config: ModalConfig) {
     this.modalSvc.open(template, config);
+  }
+
+  isHullSelected(hull: Hull) {
+    return this.selectedHull === hull;
   }
 }

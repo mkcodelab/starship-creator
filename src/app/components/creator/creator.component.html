@@ -14,12 +14,12 @@
 
         </div>
 
-        <button class="p-2 bg-neutral-600 m-1"
-                (click)="openModal(addHullModal, {title: 'test'})">Add Hull</button>
+        <button class="p-2 bg-neutral-600 m-1 rounded-full"
+                (click)="openModal(addHullModal, {title: 'test'})">Select Hull</button>
 
         <!-- if hull was added -->
         <div>
-            <button class="p-2 bg-neutral-600 m-1">Add Engine</button>
+            <button class="p-2 bg-neutral-600 m-1 rounded-full">Add Engine</button>
 
         </div>
 
@@ -50,20 +50,21 @@
 
 </div>
 
-
-
 <ng-template #addHullModal>
     <div class="range-input">
         <div>
             <p>select hull:</p>
 
             <!-- list of hulls -->
-            @for(hull of hulls; track hull){
-            <div class="bg-neutral-600 p-2 m-2 cursor-pointer"
-                 (click)="selectHull(hull)">
-                {{hull.name}}
+            <div class="flex">
+                @for(hull of hulls; track hull){
+                <div class="bg-neutral-600 p-2 m-2 cursor-pointer rounded-full"
+                     (click)="selectHull(hull)"
+                     [ngClass]="{'part-selected': isHullSelected(hull)}">
+                    {{hull.name}}
+                </div>
+                }
             </div>
-            }
 
             <button class="bg-neutral-600 p-2"
                     (click)="addHull()">add hull</button>

@@ -12,8 +12,8 @@ import { MainScene } from '../main-scene/main-scene';
 
 // figure out how to get dynamic component size
 export const ScreenSize = {
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 800,
   get aspect(): number {
     return this.width / this.height;
   },
@@ -55,6 +55,8 @@ export class EngineService implements OnDestroy {
       alpha: true,
       antialias: true,
     });
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.setSize(ScreenSize.width, ScreenSize.height);
 
     this.renderer.setClearColor(0xbdac7e);

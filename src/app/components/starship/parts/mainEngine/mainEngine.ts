@@ -16,5 +16,7 @@ export class MainEngine extends StarshipPart {
   constructor(config: ShipPartConfig) {
     super(config);
     this.mesh.rotateX(THREE.MathUtils.degToRad(90));
+    this.mesh.receiveShadow = true;
+    this.mesh.castShadow = true;
   }
 }

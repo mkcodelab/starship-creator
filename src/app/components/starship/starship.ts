@@ -17,6 +17,12 @@ export class StarshipModel {
     this.group.add(this.hull.mesh);
   }
 
+  removeHull() {
+    if (this.hull) {
+      this.group.remove(this.hull.mesh);
+    }
+  }
+
   addToGroup(element: StarshipPart) {
     this.group.add(element.mesh);
   }

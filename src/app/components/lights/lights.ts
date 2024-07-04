@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 export class Lights {
   private light: THREE.AmbientLight;
-  private spotLight: THREE.SpotLight;
+  private spotlight: THREE.SpotLight;
+  private spotlight2: THREE.SpotLight;
   private spotlightHelper: THREE.SpotLightHelper;
+  private dirLight: THREE.DirectionalLight;
 
   public lightsGroup = new THREE.Group();
 
@@ -11,21 +13,40 @@ export class Lights {
   }
 
   initLights() {
-    this.light = new THREE.AmbientLight(0xffffff, 0.5);
+    this.light = new THREE.AmbientLight(0xffffff, 0.2);
     this.light.position.z = 10;
 
-    this.spotLight = new THREE.SpotLight(0xffffff, 1, 5, 15, 0.2, 1.5);
-    this.spotLight.position.set(0, 2, 0);
+    this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.dirLight.position.set(-5, 5, 10);
 
-    this.spotlightHelper = new THREE.SpotLightHelper(this.spotLight);
+    this.dirLight.lookAt(0, 0, 0);
+    this.dirLight.castShadow = true;
 
-    this.spotLight.lookAt(0, 0, 0);
+    const dirlightHelper = new THREE.DirectionalLightHelper(this.dirLight);
 
-    this.lightsGroup.add(this.light, this.spotLight);
+    this.spotlight = new THREE.SpotLight(0xffffff, 1, 5, 15, 0.2, 1.5);
+    this.spotlight.position.set(0, 2, 0);
+    this.spotlight.castShadow = true;
+
+    this.spotlight2 = new THREE.SpotLight(0xffffff, 1, 5, 15, 0.2, 1.5);
+    this.spotlight2.position.set(1, 3, 1);
+    this.spotlight2.castShadow = true;
+
+    this.spotlightHelper = new THREE.SpotLightHelper(this.spotlight);
+
+    this.spotlight.lookAt(0, 0, 0);
+
+    this.lightsGroup.add(
+      this.light,
+      this.spotlight,
+      this.spotlight2,
+      this.dirLight,
+      dirlightHelper
+    );
   }
 
   moveSpotlight(value: number) {
-    this.spotLight.position.y = value;
+    this.spotlight.position.y = value;
     // does not work?
     // this.spotlightHelper.position.y = value;
   }
