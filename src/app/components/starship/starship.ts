@@ -4,6 +4,8 @@ import { MainEngine } from './parts/mainEngine/mainEngine';
 import { StarshipPart } from './parts/abstract.shipPart';
 import { SideEngines } from './parts/sideEngine/sideEngine';
 
+export type PartName = 'hull' | 'mainEngine' | 'sideEngines' | 'wings';
+
 export class StarshipModel {
   // complete starship
   group = new THREE.Group();
@@ -17,9 +19,52 @@ export class StarshipModel {
     this.group.add(this.hull.mesh);
   }
 
-  removeHull() {
-    if (this.hull) {
-      this.group.remove(this.hull.mesh);
+  //   removeHull() {
+  //     if (this.hull) {
+  //       this.group.remove(this.hull.mesh);
+  //     }
+  //   }
+
+  removePart(part: StarshipPart) {
+    switch (true) {
+      case part instanceof Hull:
+        if (this.hull) {
+          this.group.remove(this.hull.mesh);
+        }
+        break;
+      case part instanceof SideEngines:
+        if (this.sideEngines) {
+          this.group.remove(this.sideEngines.mesh);
+        }
+        break;
+      case part instanceof MainEngine:
+        if (this.mainEngine) {
+          this.group.remove(this.mainEngine.mesh);
+        }
+        break;
+      // case part instanceof Wings:
+      //   // this.group.remove(this.wings.mesh)
+      //   console.log('wings in progress');
+      //   break;
+      default:
+        console.log(part);
+    }
+  }
+
+  addPart(part: StarshipPart) {
+    switch (true) {
+      case part instanceof Hull:
+        this.removePart(part);
+        this.addHull(part);
+        break;
+      case part instanceof SideEngines:
+        this.removePart(part);
+        this.addSideEngines(part);
+        break;
+      case part instanceof MainEngine:
+        this.removePart(part);
+        this.addMainEngine(part);
+        break;
     }
   }
 

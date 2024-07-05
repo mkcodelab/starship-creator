@@ -3,6 +3,8 @@ import { ShipPartConfig, StarshipPart } from '../abstract.shipPart';
 
 export interface SideEngineConfig extends ShipPartConfig {
   geom: THREE.BufferGeometry;
+  material: THREE.Material;
+  speedModifier?: number;
 }
 
 export class SideEngines extends StarshipPart {
@@ -10,9 +12,7 @@ export class SideEngines extends StarshipPart {
 
   mass = 50;
 
-  material = new THREE.MeshPhongMaterial({
-    color: 0xeeeeee,
-  });
+  material: THREE.Material;
 
   mesh: THREE.Mesh;
 
@@ -20,6 +20,7 @@ export class SideEngines extends StarshipPart {
     super(sideEnginesConfig);
 
     this.geom = sideEnginesConfig.geom;
+    this.material = sideEnginesConfig.material;
     this.mesh = new THREE.Mesh(this.geom, this.material);
     this.mesh.receiveShadow = true;
     this.mesh.castShadow = true;

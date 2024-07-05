@@ -8,12 +8,8 @@ import { CreatorService } from '../creator/creator.service';
 import { Hull } from '../starship/parts/hull/hull';
 import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
 import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
-import {
-  generatedTextureMap,
-  generatedTextureNormalMap,
-} from '../starship/parts/hull/createdHulls';
+import { StarshipPart } from '../starship/parts/abstract.shipPart';
 
-// maybe make it as singleton?
 @Injectable({
   providedIn: 'root',
 })
@@ -33,7 +29,7 @@ export class MainScene {
   creatorSvc = inject(CreatorService);
 
   constructor() {
-    this.camera.position.set(5, 5, 5);
+    this.camera.position.set(2, 2, 2);
     this.scene.add(this.camera);
 
     const axesHelper = new THREE.AxesHelper(10);
@@ -49,26 +45,13 @@ export class MainScene {
     // adding starship
     this.addStarship();
 
-    // testing normalMap generation
-    // this.createTestTexturePlane(generatedTextureMap, 5, 5, 5);
-    // this.createTestTexturePlane(generatedTextureNormalMap, 5, 0, 5);
-
     // here we will subscribe to the creator.service events
     this.creatorSvc.moveSideEngineEvent$.subscribe((data) => {
       this.starshipModel.moveSideEngines(data.y, data.z);
     });
 
-    this.creatorSvc.creatorServiceEvents$.subscribe((data) => {
-      switch (true) {
-        case data instanceof Hull:
-          this.addHull(data);
-          break;
-        case data instanceof SideEngines:
-          this.addSideEngines(data);
-          break;
-        default:
-          console.warn('unrecognized action!');
-      }
+    this.creatorSvc.creatorServiceEvents$.subscribe((part) => {
+      this.starshipModel.addPart(part);
     });
   }
 
@@ -79,24 +62,9 @@ export class MainScene {
 
   addStarship() {
     this.starshipModel = new StarshipModel();
-    // this.starshipModel.addMainEngine(StandardMainEngine);
     this.scene.add(this.starshipModel.group);
     // move whole ship a bit higher
     this.starshipModel.group.position.y = 1;
-  }
-
-  addHull(hull: Hull) {
-    // first, clear hull
-    this.starshipModel.removeHull();
-    this.starshipModel.addHull(hull);
-  }
-
-  addMainEngine(mainEngine: MainEngine) {
-    this.starshipModel.addMainEngine(mainEngine);
-  }
-
-  addSideEngines(sideEngines: SideEngines) {
-    this.starshipModel.addSideEngines(sideEngines);
   }
 
   update() {
@@ -105,8 +73,6 @@ export class MainScene {
       //   this.cube.rotation.z += 0.1;
       //   this.basePlate.rotation.y += 0.01;
     }
-
-    // this.starshipModel.group.rotation.y -= 0.01;
   }
 
   moveSpotlight(value: number) {
@@ -114,7 +80,6 @@ export class MainScene {
   }
 
   createBasePlate() {
-    // const basePlateGeometry = new THREE.BoxGeometry(5, 0.1, 5);
     const basePlateGeometry = new THREE.CylinderGeometry(5, 5.5, 0.2);
     const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
     this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
