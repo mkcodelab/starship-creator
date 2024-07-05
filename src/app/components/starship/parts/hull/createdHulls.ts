@@ -2,14 +2,30 @@ import * as THREE from 'three';
 import { Hull } from './hull';
 import { generateCanvasTexture } from '../../../../utils/textures/canvasTexture';
 
+const hullMaterial = generateCanvasTexture();
+
+export const generatedTextureMap = new THREE.CanvasTexture(hullMaterial.map);
+generatedTextureMap.wrapS = generatedTextureMap.wrapT = THREE.RepeatWrapping;
+generatedTextureMap.repeat.set(2, 2);
+
+// generatedTextureMap.wrapS = generatedTextureMap.wrapT = THREE.RepeatWrapping;
+export const generatedTextureNormalMap = new THREE.CanvasTexture(
+  hullMaterial.normalMap
+);
+generatedTextureNormalMap.wrapS = generatedTextureNormalMap.wrapT =
+  THREE.RepeatWrapping;
+generatedTextureNormalMap.repeat.set(2, 2);
+
 export const StandardHull = new Hull({
   name: 'Standard Hull',
   hpModifier: 10,
-  geom: new THREE.BoxGeometry(1, 1, 4),
+  geom: new THREE.BoxGeometry(1, 1, 3),
   material: new THREE.MeshStandardMaterial({
     color: 0xdddddd,
     metalness: 1,
     roughness: 0.5,
+    map: generatedTextureMap,
+    normalMap: generatedTextureNormalMap,
   }),
 });
 
@@ -23,13 +39,6 @@ export const ImprovedHull = new Hull({
   }),
 });
 
-const hullMaterial = generateCanvasTexture();
-
-export const hexHullTexture = new THREE.CanvasTexture(hullMaterial.map);
-export const hexHullTextureNormalMap = new THREE.CanvasTexture(
-  hullMaterial.normalMap
-);
-
 export const HexHull = new Hull(
   {
     name: 'Hex Hull',
@@ -40,10 +49,8 @@ export const HexHull = new Hull(
       metalness: 0.8,
       roughness: 0.2,
       flatShading: true,
-      map: hexHullTexture,
-      normalMap: hexHullTextureNormalMap,
-      //   roughnessMap: hexHullTexture,
-      //   metalnessMap: hexHullTexture,
+      map: generatedTextureMap,
+      normalMap: generatedTextureNormalMap,
     }),
   },
   true

@@ -8,7 +8,10 @@ import { CreatorService } from '../creator/creator.service';
 import { Hull } from '../starship/parts/hull/hull';
 import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
 import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
-import { hexHullTextureNormalMap } from '../starship/parts/hull/createdHulls';
+import {
+  generatedTextureMap,
+  generatedTextureNormalMap,
+} from '../starship/parts/hull/createdHulls';
 
 // maybe make it as singleton?
 @Injectable({
@@ -47,19 +50,15 @@ export class MainScene {
     this.addStarship();
 
     // testing normalMap generation
-    // there something wrong with this sobel algorithm
-    this.createTestTexturePlane(hexHullTextureNormalMap, 5, 5, 5);
+    // this.createTestTexturePlane(generatedTextureMap, 5, 5, 5);
+    // this.createTestTexturePlane(generatedTextureNormalMap, 5, 0, 5);
 
-    // maybe we can use merge, to merge all the events together, and then in subscribe callback
-    // do the branching
     // here we will subscribe to the creator.service events
     this.creatorSvc.moveSideEngineEvent$.subscribe((data) => {
       this.starshipModel.moveSideEngines(data.y, data.z);
     });
 
     this.creatorSvc.creatorServiceEvents$.subscribe((data) => {
-      console.log('data from merged observables', data);
-
       switch (true) {
         case data instanceof Hull:
           this.addHull(data);
