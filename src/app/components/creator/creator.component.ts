@@ -5,13 +5,15 @@ import { CreatorService } from './creator.service';
 import { ModalConfig, ModalService } from '../../services/modal.service';
 import { HullsArray } from '../starship/parts/hull/createdHulls';
 import { Hull } from '../starship/parts/hull/hull';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { SideEnginesArray } from '../starship/parts/sideEngine/createdSideEngines';
+import { MainEnginesArray } from '../starship/parts/mainEngine/createdMainEngines';
 
 @Component({
   standalone: true,
   selector: 'creator',
   templateUrl: './creator.component.html',
-  imports: [EngineComponent, NgClass],
+  imports: [EngineComponent, NgClass, NgTemplateOutlet],
   styles: `
     $outline-col: hsl(80, 50%, 50%);
 
@@ -27,6 +29,8 @@ export class CreatorComponent {
   modalSvc = inject(ModalService);
 
   hulls = HullsArray;
+  sideEngines = SideEnginesArray;
+  mainEngines = MainEnginesArray;
 
   selectedHull: Hull | undefined;
   //   add some prevent mechanism from adding multiple hulls.
@@ -45,6 +49,8 @@ export class CreatorComponent {
   }
 
   addHull() {
+    console.log('test add');
+    console.log(this);
     if (this.selectedHull) {
       this.creatorSvc.addHull(this.selectedHull);
       this.modalSvc.close();
@@ -55,6 +61,11 @@ export class CreatorComponent {
 
   addSideEngines() {
     this.creatorSvc.addSideEngines();
+  }
+
+  addMainEngine() {
+    // this.creatorSvc.addMainEngine();
+    console.log('main engine added');
   }
 
   selectHull(hull: Hull) {

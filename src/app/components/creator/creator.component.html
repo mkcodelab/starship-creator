@@ -1,9 +1,9 @@
 <div class="flex">
 
     <div class="flex flex-col bg-neutral-400">
-        <button class="p-2 bg-neutral-600 m-1"
-                (click)="toggleAnim()">toggleAnim</button>
-        <div class="bg-neutral-600">
+
+        <!-- todo env / light menu -->
+        <!-- <div class="bg-neutral-600">
             <input #spotlightY
                    type="range"
                    min="0"
@@ -12,37 +12,27 @@
                    (input)="moveSpotlight(+spotlightY.value)">
 
 
-        </div>
+        </div> -->
 
-        <button class="p-2 bg-neutral-600 m-1 rounded-full"
-                (click)="openModal(addHullModal, {title: 'test'})">Select Hull</button>
+        <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                (click)="openModal(addHullModal, {title: 'Hull Selection'})">Select Hull</button>
 
         <!-- if hull was added -->
         <div>
-            <button class="p-2 bg-neutral-600 m-1 rounded-full">Add Engine</button>
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="openModal(addMainEngineModal, {title: 'Add Main Engine'})">Add Main Engine</button>
 
         </div>
 
         <!-- side engines position -->
         <div>
-            <button class="p-2 bg-neutral-600"
-                    (click)="addSideEngines()">Add Side Engines</button>
-            <p>side engine position</p>
-            <label [for]="sideEngineY">Y pos</label>
-            <input #sideEngineY
-                   type="range"
-                   min="-1"
-                   max="1"
-                   step="0.1"
-                   (input)="moveSideEngine(+sideEngineY.value, 0)">
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="openModal(addSideEnginesModal, {title: 'Add Side Engines'})">Add Side Engines</button>
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="openModal(sideEngineOptionsModal, {title:'side engines options'})">
+                opts
+            </button>
 
-            <label [for]="sideEngineZ">Z pos</label>
-            <input #sideEngineZ
-                   type="range"
-                   min="-1"
-                   max="1"
-                   step="0.1"
-                   (input)="moveSideEngine(0, +sideEngineZ.value)">
         </div>
     </div>
     <!-- renderer window -->
@@ -51,25 +41,88 @@
 </div>
 
 <ng-template #addHullModal>
-    <div class="range-input">
-        <div>
-            <p>select hull:</p>
 
-            <!-- list of hulls -->
-            <div class="flex">
-                @for(hull of hulls; track hull){
-                <div class="bg-neutral-600 p-2 m-2 cursor-pointer rounded-full"
-                     (click)="selectHull(hull)"
-                     [ngClass]="{'part-selected': isHullSelected(hull)}">
-                    {{hull.name}}
-                </div>
-                }
-            </div>
+    <!-- action loses this -->
+    <!-- !!!! bind(this) -->
+    <ng-container
+                  *ngTemplateOutlet="modalBody; context: {name: 'Hull', action: addHull.bind(this), parts: hulls}"></ng-container>
 
-            <button class="bg-neutral-600 p-2"
-                    (click)="addHull()">add hull</button>
+
+</ng-template>
+
+<ng-template #addMainEngineModal>
+    <ng-container
+                  *ngTemplateOutlet="modalBody; context: {name: 'Main Engine', action: addMainEngine.bind(this), parts: mainEngines}"></ng-container>
+</ng-template>
+
+<ng-template #addSideEnginesModal>
+    <ng-container
+                  *ngTemplateOutlet="modalBody; context: {name: 'Side Engines', action: addSideEngines.bind(this), parts: sideEngines}"></ng-container>
+</ng-template>
+
+<ng-template #modalBody
+             let-name="name"
+             let-action="action"
+             let-parts="parts">
+    <div class="flex flex-col justify-between h-full">
+
+        <!-- add here @for(part of parts) -->
+        @if(parts) {
+        <div class="flex">
+
+            @for(part of parts; track part){
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="selectHull(part)"
+                    [ngClass]="{'part-selected': isHullSelected(part)}">
+                {{part.name}}
+            </button>
+            }
         </div>
+        }
 
-
+        <div class="flex justify-center">
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="action()">Add {{name}}</button>
+        </div>
     </div>
 </ng-template>
+
+<ng-template #sideEngineOptionsModal>
+    <div>
+        <p>side engine position</p>
+        <label [for]="sideEngineY">Y pos</label>
+        <input #sideEngineY
+               type="range"
+               min="-1"
+               max="1"
+               step="0.1"
+               (input)="moveSideEngine(+sideEngineY.value, 0)">
+
+        <label [for]="sideEngineZ">Z pos</label>
+        <input #sideEngineZ
+               type="range"
+               min="-1"
+               max="1"
+               step="0.1"
+               (input)="moveSideEngine(0, +sideEngineZ.value)">
+    </div>
+</ng-template>
+
+<!-- <div class="flex flex-col justify-between h-full">
+
+        <div class="flex">
+            @for(hull of hulls; track hull){
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="selectHull(hull)"
+                    [ngClass]="{'part-selected': isHullSelected(hull)}">
+                {{hull.name}}
+            </button>
+            }
+        </div>
+
+        <div class="flex justify-center">
+
+            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
+                    (click)="addHull()">add hull</button>
+        </div>
+    </div> -->

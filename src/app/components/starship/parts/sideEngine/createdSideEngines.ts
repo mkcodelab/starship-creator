@@ -7,3 +7,5 @@ export const StandardSideEngine = new SideEngines({
   geom: generateSideEngineGeom(),
   material: BasicSteelMaterial,
 });
+
+export const SideEnginesArray = [StandardSideEngine];

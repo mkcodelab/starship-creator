@@ -38,4 +38,7 @@ export class CreatorService {
   addSideEngines() {
     this.selectedSideEngines$.next(StandardSideEngine);
   }
+  addMainEngine() {
+    console.log('main engine added');
+  }
 }
