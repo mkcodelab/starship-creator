@@ -8,6 +8,10 @@ import { Hull } from '../starship/parts/hull/hull';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { SideEnginesArray } from '../starship/parts/sideEngine/createdSideEngines';
 import { MainEnginesArray } from '../starship/parts/mainEngine/createdMainEngines';
+import { Subscription } from 'rxjs';
+import { StarshipPart } from '../starship/parts/abstract.shipPart';
+import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
+import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
 
 @Component({
   standalone: true,
@@ -28,16 +32,23 @@ export class CreatorComponent {
   engineSvc = inject(EngineService);
   modalSvc = inject(ModalService);
 
+  //   move to creatorService???
   hulls = HullsArray;
   sideEngines = SideEnginesArray;
   mainEngines = MainEnginesArray;
 
+  //   move to creatorService
   selectedHull: Hull | undefined;
-  //   add some prevent mechanism from adding multiple hulls.
-  // there can be only one hull
+  selectedMainEngine: MainEngine | undefined;
+  selectedSideEngines: SideEngines | undefined;
 
-  toggleAnim() {
-    this.engineSvc.cubeRotation = !this.engineSvc.cubeRotation;
+  isHullAdded = false;
+  private hullAdded: Subscription;
+
+  ngOnInit() {
+    this.hullAdded = this.creatorSvc.hullSelectionEvent$.subscribe(() => {
+      this.isHullAdded = true;
+    });
   }
 
   moveSpotlight(value: number) {
@@ -49,8 +60,6 @@ export class CreatorComponent {
   }
 
   addHull() {
-    console.log('test add');
-    console.log(this);
     if (this.selectedHull) {
       this.creatorSvc.addHull(this.selectedHull);
       this.modalSvc.close();
@@ -61,11 +70,23 @@ export class CreatorComponent {
 
   addSideEngines() {
     this.creatorSvc.addSideEngines();
+    this.modalSvc.close();
   }
 
   addMainEngine() {
     // this.creatorSvc.addMainEngine();
-    console.log('main engine added');
+    if (this.selectedMainEngine) {
+      console.log('main engine added');
+      this.creatorSvc.addPart(this.selectedMainEngine);
+      this.modalSvc.close();
+    }
+    // console.log('addMainEngine', part);
+  }
+
+  addPart(part: StarshipPart) {
+    // if part is selected and not undefined
+    this.creatorSvc.addPart(part);
+    this.modalSvc.close();
   }
 
   selectHull(hull: Hull) {
@@ -73,11 +94,47 @@ export class CreatorComponent {
     console.log('hull selected', this.selectedHull);
   }
 
+  //   move to creatorService
+  selectPart(part: StarshipPart) {
+    switch (true) {
+      case part instanceof Hull:
+        this.selectedHull = part;
+        break;
+      case part instanceof MainEngine:
+        this.selectedMainEngine = part;
+        break;
+      case part instanceof SideEngines:
+        this.selectedSideEngines = part;
+        break;
+      default:
+        console.warn('not a part');
+    }
+  }
+
   openModal(template: TemplateRef<any>, config: ModalConfig) {
     this.modalSvc.open(template, config);
   }
 
+  //   boolean for displaying 'part-selected' class
   isHullSelected(hull: Hull) {
     return this.selectedHull === hull;
+  }
+
+  isPartSelected(part: StarshipPart) {
+    switch (true) {
+      case part instanceof Hull:
+        return this.selectedHull === part;
+      case part instanceof MainEngine:
+        return this.selectedMainEngine === part;
+      case part instanceof SideEngines:
+        return this.selectedSideEngines === part;
+
+      default:
+        return false;
+    }
+  }
+
+  ngOnDestroy() {
+    this.hullAdded.unsubscribe();
   }
 }
