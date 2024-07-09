@@ -5,7 +5,18 @@ import {
   generatedTextureMap,
   generatedTextureNormalMap,
 } from '../../../../utils/textures/generatedTextures';
-import { BasicSteelMaterial } from '../../../../3d/materials/materials';
+import {
+  AlienMetalMaterial,
+  BasicSteelMaterial,
+} from '../../../../3d/materials/materials';
+
+// import { FlakesTexture } from 'three/examples/jsm/textures/FlakesTexture';
+
+// const flakeTex = new THREE.CanvasTexture(new FlakesTexture());
+
+// const flakeMat = new THREE.MeshBasicMaterial({
+//   map: flakeTex,
+// });
 
 export const StandardHull = new Hull({
   name: 'Standard Hull',
@@ -18,10 +29,12 @@ export const ImprovedHull = new Hull({
   name: 'Improved Hull',
   hpModifier: 50,
   geom: new THREE.BoxGeometry(1, 2, 4),
-  material: new THREE.MeshPhongMaterial({
-    color: 0xeeeeee,
-    shininess: 0.8,
-  }),
+  material: AlienMetalMaterial,
+  //   material: flakeMat,
+  //   material: new THREE.MeshPhongMaterial({
+  //     color: 0xeeeeee,
+  //     shininess: 0.8,
+  //   }),
 });
 
 export const HexHull = new Hull(
