@@ -3,15 +3,9 @@ import { EngineComponent } from '../engine/engine.component';
 import { EngineService } from '../engine/engine.service';
 import { CreatorService } from './creator.service';
 import { ModalConfig, ModalService } from '../../services/modal.service';
-import { HullsArray } from '../starship/parts/hull/createdHulls';
 import { Hull } from '../starship/parts/hull/hull';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { SideEnginesArray } from '../starship/parts/sideEngine/createdSideEngines';
-import { MainEnginesArray } from '../starship/parts/mainEngine/createdMainEngines';
-import { Subscription } from 'rxjs';
 import { StarshipPart } from '../starship/parts/abstract.shipPart';
-import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
-import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
 
 @Component({
   standalone: true,
@@ -32,16 +26,6 @@ export class CreatorComponent {
   engineSvc = inject(EngineService);
   modalSvc = inject(ModalService);
 
-  //   move to creatorService???
-  hulls = HullsArray;
-  sideEngines = SideEnginesArray;
-  mainEngines = MainEnginesArray;
-
-  //   move to creatorService
-  selectedHull: Hull | undefined;
-  selectedMainEngine: MainEngine | undefined;
-  selectedSideEngines: SideEngines | undefined;
-
   moveSpotlight(value: number) {
     this.engineSvc.moveSpotlight(value);
   }
@@ -51,7 +35,6 @@ export class CreatorComponent {
   }
 
   addPart(part: StarshipPart) {
-    // if part is selected and not undefined
     if (part instanceof Hull) {
       this.creatorSvc.isHullAdded = true;
     }
@@ -59,47 +42,40 @@ export class CreatorComponent {
     this.modalSvc.close();
   }
 
-  //   move to creatorService
   selectPart(part: StarshipPart) {
-    switch (true) {
-      case part instanceof Hull:
-        this.selectedHull = part;
-        break;
-      case part instanceof MainEngine:
-        this.selectedMainEngine = part;
-        break;
-      case part instanceof SideEngines:
-        this.selectedSideEngines = part;
-        break;
-      default:
-        console.warn('not a part');
-    }
+    this.creatorSvc.selectPart(part);
   }
 
   openModal(template: TemplateRef<any>, config: ModalConfig) {
     this.modalSvc.open(template, config);
   }
 
-  //   boolean for displaying 'part-selected' class
-  isHullSelected(hull: Hull) {
-    return this.selectedHull === hull;
-  }
-
-  //   boolean for displaying 'part-selected' class
   isPartSelected(part: StarshipPart) {
-    switch (true) {
-      case part instanceof Hull:
-        return this.selectedHull === part;
-      case part instanceof MainEngine:
-        return this.selectedMainEngine === part;
-      case part instanceof SideEngines:
-        return this.selectedSideEngines === part;
-
-      default:
-        return false;
-    }
+    return this.creatorSvc.isPartSelected(part);
   }
   get isHullAdded() {
     return this.creatorSvc.isHullAdded;
+  }
+
+  get hulls() {
+    return this.creatorSvc.hulls;
+  }
+
+  get mainEngines() {
+    return this.creatorSvc.mainEngines;
+  }
+
+  get sideEngines() {
+    return this.creatorSvc.sideEngines;
+  }
+
+  get selectedHull() {
+    return this.creatorSvc.selectedHull;
+  }
+  get selectedMainEngine() {
+    return this.creatorSvc.selectedMainEngine;
+  }
+  get selectedSideEngines() {
+    return this.creatorSvc.selectedSideEngines;
   }
 }

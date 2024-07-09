@@ -44,15 +44,10 @@
     <engine></engine>
 
 </div>
-<!-- remove action variable -->
 <ng-template #addHullModal>
 
-    <!-- action loses this -->
-    <!-- !!!! bind(this) -->
-    <!-- action: addMainEngine.bind(this) -->
     <ng-container
                   *ngTemplateOutlet="modalBody; context: {name: 'Hull', parts: hulls, partToAdd: selectedHull}"></ng-container>
-
 
 </ng-template>
 
@@ -66,7 +61,6 @@
                   *ngTemplateOutlet="modalBody; context: {name: 'Side Engines', parts: sideEngines, partToAdd: selectedSideEngines}"></ng-container>
 </ng-template>
 
-<!-- remove action variable, and just use addPart(part) -->
 <ng-template #modalBody
              let-name="name"
              let-parts="parts"
