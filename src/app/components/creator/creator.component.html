@@ -1,6 +1,6 @@
 <div class="flex">
 
-    <div class="flex flex-col bg-neutral-400 w-1/2">
+    <div class="flex flex-col bg-neutral-400 w-1/4">
 
         <!-- todo env / light menu -->
         <!-- <div class="bg-neutral-600">
@@ -26,10 +26,11 @@
         </div>
 
 
-        <!-- side engines position -->
         <div>
             <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
                     (click)="openModal(addSideEnginesModal, {title: 'Add Side Engines'})">Add Side Engines</button>
+
+
             <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
                     (click)="openModal(sideEngineOptionsModal, {title:'side engines options'})">
                 opts
@@ -48,34 +49,33 @@
 
     <!-- action loses this -->
     <!-- !!!! bind(this) -->
+    <!-- action: addMainEngine.bind(this) -->
     <ng-container
-                  *ngTemplateOutlet="modalBody; context: {name: 'Hull', action: addHull.bind(this), parts: hulls}"></ng-container>
+                  *ngTemplateOutlet="modalBody; context: {name: 'Hull', parts: hulls, partToAdd: selectedHull}"></ng-container>
 
 
 </ng-template>
 
 <ng-template #addMainEngineModal>
     <ng-container
-                  *ngTemplateOutlet="modalBody; context: {name: 'Main Engine', action: addMainEngine.bind(this), parts: mainEngines}"></ng-container>
+                  *ngTemplateOutlet="modalBody; context: {name: 'Main Engine', parts: mainEngines, partToAdd: selectedMainEngine}"></ng-container>
 </ng-template>
 
 <ng-template #addSideEnginesModal>
     <ng-container
-                  *ngTemplateOutlet="modalBody; context: {name: 'Side Engines', action: addSideEngines.bind(this), parts: sideEngines}"></ng-container>
+                  *ngTemplateOutlet="modalBody; context: {name: 'Side Engines', parts: sideEngines, partToAdd: selectedSideEngines}"></ng-container>
 </ng-template>
 
 <!-- remove action variable, and just use addPart(part) -->
 <ng-template #modalBody
              let-name="name"
-             let-action="action"
-             let-parts="parts">
+             let-parts="parts"
+             let-partToAdd="partToAdd">
     <div class="flex flex-col justify-between h-full">
 
-        <!-- add here @for(part of parts) -->
         @if(parts) {
         <div class="flex">
 
-            <!-- (click)="selectHull(part)" -->
             @for(part of parts; track part){
             <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
                     (click)="selectPart(part)"
@@ -86,10 +86,10 @@
         </div>
         }
 
-        <!-- change action to generic addPart(part) method -->
         <div class="flex justify-center">
+
             <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
-                    (click)="action()">Add {{name}}</button>
+                    (click)="addPart(partToAdd)">Add {{name}}</button>
         </div>
     </div>
 </ng-template>
@@ -114,22 +114,3 @@
                (input)="moveSideEngine(0, +sideEngineZ.value)">
     </div>
 </ng-template>
-
-<!-- <div class="flex flex-col justify-between h-full">
-
-        <div class="flex">
-            @for(hull of hulls; track hull){
-            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
-                    (click)="selectHull(hull)"
-                    [ngClass]="{'part-selected': isHullSelected(hull)}">
-                {{hull.name}}
-            </button>
-            }
-        </div>
-
-        <div class="flex justify-center">
-
-            <button class="bg-neutral-600 hover:bg-neutral-500 p-2 m-2 cursor-pointer rounded-full"
-                    (click)="addHull()">add hull</button>
-        </div>
-    </div> -->

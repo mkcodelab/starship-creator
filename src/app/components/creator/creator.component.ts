@@ -42,15 +42,6 @@ export class CreatorComponent {
   selectedMainEngine: MainEngine | undefined;
   selectedSideEngines: SideEngines | undefined;
 
-  isHullAdded = false;
-  private hullAdded: Subscription;
-
-  ngOnInit() {
-    this.hullAdded = this.creatorSvc.hullSelectionEvent$.subscribe(() => {
-      this.isHullAdded = true;
-    });
-  }
-
   moveSpotlight(value: number) {
     this.engineSvc.moveSpotlight(value);
   }
@@ -59,39 +50,13 @@ export class CreatorComponent {
     this.creatorSvc.moveSideEngine(y, z);
   }
 
-  addHull() {
-    if (this.selectedHull) {
-      this.creatorSvc.addHull(this.selectedHull);
-      this.modalSvc.close();
-    } else {
-      console.warn('hull not selected');
-    }
-  }
-
-  addSideEngines() {
-    this.creatorSvc.addSideEngines();
-    this.modalSvc.close();
-  }
-
-  addMainEngine() {
-    // this.creatorSvc.addMainEngine();
-    if (this.selectedMainEngine) {
-      console.log('main engine added');
-      this.creatorSvc.addPart(this.selectedMainEngine);
-      this.modalSvc.close();
-    }
-    // console.log('addMainEngine', part);
-  }
-
   addPart(part: StarshipPart) {
     // if part is selected and not undefined
+    if (part instanceof Hull) {
+      this.creatorSvc.isHullAdded = true;
+    }
     this.creatorSvc.addPart(part);
     this.modalSvc.close();
-  }
-
-  selectHull(hull: Hull) {
-    this.selectedHull = hull;
-    console.log('hull selected', this.selectedHull);
   }
 
   //   move to creatorService
@@ -120,6 +85,7 @@ export class CreatorComponent {
     return this.selectedHull === hull;
   }
 
+  //   boolean for displaying 'part-selected' class
   isPartSelected(part: StarshipPart) {
     switch (true) {
       case part instanceof Hull:
@@ -133,8 +99,7 @@ export class CreatorComponent {
         return false;
     }
   }
-
-  ngOnDestroy() {
-    this.hullAdded.unsubscribe();
+  get isHullAdded() {
+    return this.creatorSvc.isHullAdded;
   }
 }

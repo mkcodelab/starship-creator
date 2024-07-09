@@ -5,10 +5,6 @@ import { Lights } from '../lights/lights';
 
 import { Injectable, inject } from '@angular/core';
 import { CreatorService } from '../creator/creator.service';
-import { Hull } from '../starship/parts/hull/hull';
-import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
-import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
-import { StarshipPart } from '../starship/parts/abstract.shipPart';
 
 @Injectable({
   providedIn: 'root',
