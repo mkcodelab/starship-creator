@@ -1,34 +1,9 @@
-import {
-  alienMetalTexture,
-  CirclesTexture,
-  generateCanvasTexture,
-} from './canvasTexture';
+import { CirclesTexture, MetalTexture } from './canvasTexture';
 import * as THREE from 'three';
-
-const hullMaterial = generateCanvasTexture();
-
-export const generatedTextureMap = new THREE.CanvasTexture(hullMaterial.map);
-repeatTexture(2, 2, generatedTextureMap);
-
-export const generatedTextureNormalMap = new THREE.CanvasTexture(
-  hullMaterial.normalMap
-);
-repeatTexture(2, 2, generatedTextureNormalMap);
-
-// just testing
-const alienMaterial = alienMetalTexture();
-
-export const alienMetalMap = new THREE.CanvasTexture(alienMaterial.map);
-
-repeatTexture(2, 2, alienMetalMap);
-
-export const alienMetalNormalMap = new THREE.CanvasTexture(
-  alienMaterial.normalMap
-);
-repeatTexture(2, 2, alienMetalNormalMap);
 
 // created from class
 
+// circle metal textures
 const circleTextureTest = new CirclesTexture();
 
 export const circleTextureTestMap = new THREE.CanvasTexture(
@@ -39,6 +14,17 @@ export const circleTextureTestNormalMap = new THREE.CanvasTexture(
   circleTextureTest.normalMapCanvas
 );
 repeatTexture(2, 2, circleTextureTestNormalMap);
+
+// basic metal textures
+const metalTexture = new MetalTexture();
+export const basicSteelTextureMap = new THREE.CanvasTexture(
+  metalTexture.canvas
+);
+repeatTexture(2, 2, basicSteelTextureMap);
+export const basicSteelTextureNormalMap = new THREE.CanvasTexture(
+  metalTexture.normalMapCanvas
+);
+repeatTexture(2, 2, basicSteelTextureNormalMap);
 
 function repeatTexture(
   repeatX: number,

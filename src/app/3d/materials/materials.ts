@@ -1,27 +1,36 @@
 import * as THREE from 'three';
 import {
-  alienMetalMap,
-  alienMetalNormalMap,
-  generatedTextureMap,
-  generatedTextureNormalMap,
+  basicSteelTextureMap,
+  basicSteelTextureNormalMap,
+  circleTextureTestMap,
+  circleTextureTestNormalMap,
 } from '../../utils/textures/generatedTextures';
 
 export const BasicSteelMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   metalness: 0.9,
   roughness: 0.2,
-  map: generatedTextureMap,
-  normalMap: generatedTextureNormalMap,
+  map: basicSteelTextureMap,
+  normalMap: basicSteelTextureNormalMap,
   // roughnessMap: generatedTextureMap,
-  bumpMap: generatedTextureMap,
+  //   bumpMap: generatedTextureMap,
 });
 
 export const AlienMetalMaterial = new THREE.MeshStandardMaterial({
   color: 0xddffdd,
   metalness: 0.8,
   roughness: 0.2,
-  map: alienMetalMap,
-  normalMap: alienMetalNormalMap,
+  map: circleTextureTestMap,
+  normalMap: circleTextureTestNormalMap,
   // roughnessMap: generatedTextureMap,
-  bumpMap: alienMetalNormalMap,
+  bumpMap: circleTextureTestMap,
+});
+
+export const CorrugatedCopperMaterial = new THREE.MeshStandardMaterial({
+  map: circleTextureTestMap,
+  normalMap: circleTextureTestNormalMap,
+  color: 0xfabfab,
+  metalness: 0.8,
+  roughness: 0.3,
+  flatShading: true,
 });
