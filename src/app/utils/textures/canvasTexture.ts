@@ -1,7 +1,74 @@
 import { height2normal } from './height2normal';
+import { noise } from './noise';
 
 // create base class like GeneratedTexture, and extend it
-// something like FlakesTexture from examples
+
+export abstract class GeneratedTexture {
+  public canvas = <HTMLCanvasElement>document.createElement('canvas');
+  protected ctx = this.canvas.getContext('2d');
+
+  public normalMapCanvas = <HTMLCanvasElement>document.createElement('canvas');
+  protected normalCtx = this.normalMapCanvas.getContext('2d');
+
+  constructor(protected res = 1024) {
+    this.initCanvas();
+
+    this.generate();
+    this.generateNormalMap();
+  }
+
+  private initCanvas() {
+    this.normalMapCanvas.width = this.res;
+    this.normalMapCanvas.height = this.res;
+
+    this.canvas.width = this.res;
+    this.canvas.height = this.res;
+
+    if (this.ctx) {
+      this.ctx.fillStyle = '#333';
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+
+  abstract generate(): void;
+
+  generateNormalMap() {
+    // create normalmap
+    //   convert grayscale heightMap to normalMap
+    if (this.normalCtx) {
+      this.normalCtx.drawImage(this.canvas, 0, 0);
+      height2normal(this.normalMapCanvas);
+    }
+  }
+}
+
+export class CirclesTexture extends GeneratedTexture {
+  generate(): void {
+    if (this.ctx) {
+      // blur is slow...
+      //   this.ctx.filter = 'blur(4px)';
+      noise(this.ctx);
+    }
+    for (let i = 0; i < 1000; i++) {
+      const sizeFluct = 20;
+      let x = Math.random() * this.res - 20;
+      let y = Math.random() * this.res - 20;
+      let size = Math.random() * sizeFluct;
+
+      let light = Math.floor(Math.random() * 60 + 40);
+
+      let col = `hsla(0, 0%, ${light}%, 1)`;
+
+      if (this.ctx) {
+        this.ctx.fillStyle = col;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, size, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.closePath();
+      }
+    }
+  }
+}
 
 export function generateCanvasTexture() {
   const canvas = <HTMLCanvasElement>document.createElement('canvas');

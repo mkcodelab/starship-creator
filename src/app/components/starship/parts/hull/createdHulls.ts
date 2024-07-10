@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { Hull } from './hull';
 import { createExtrudeGeom } from '../../../../utils/geometries/proceduralGeom';
 import {
+  circleTextureTestMap,
+  circleTextureTestNormalMap,
   generatedTextureMap,
   generatedTextureNormalMap,
 } from '../../../../utils/textures/generatedTextures';
@@ -59,6 +61,8 @@ export const BevelHull = new Hull({
   hpModifier: 60,
   geom: createExtrudeGeom(0.4, 1, 3),
   material: new THREE.MeshStandardMaterial({
+    map: circleTextureTestMap,
+    normalMap: circleTextureTestNormalMap,
     color: 0xfabfab,
     metalness: 0.8,
     roughness: 0.3,
