@@ -16,11 +16,6 @@ export class StarshipModel {
   // complete starship
   group = new THREE.Group();
 
-  //   remove those props, and use parts object
-  hull: Hull;
-  mainEngine: MainEngine;
-  sideEngines: SideEngines;
-
   parts: ShipModelParts = {
     hull: undefined,
     mainEngine: undefined,
@@ -30,18 +25,18 @@ export class StarshipModel {
   removePart(part: StarshipPart) {
     switch (true) {
       case part instanceof Hull:
-        if (this.hull) {
-          this.group.remove(this.hull.mesh);
+        if (this.parts.hull) {
+          this.group.remove(this.parts.hull.mesh);
         }
         break;
       case part instanceof SideEngines:
-        if (this.sideEngines) {
-          this.group.remove(this.sideEngines.mesh);
+        if (this.parts.sideEngines) {
+          this.group.remove(this.parts.sideEngines.mesh);
         }
         break;
       case part instanceof MainEngine:
-        if (this.mainEngine) {
-          this.group.remove(this.mainEngine.mesh);
+        if (this.parts.mainEngine) {
+          this.group.remove(this.parts.mainEngine.mesh);
         }
         break;
       // case part instanceof Wings:
@@ -76,40 +71,41 @@ export class StarshipModel {
 
   addHull(hull: Hull) {
     this.parts.hull = hull;
-    this.hull = hull;
-    this.group.add(this.hull.mesh);
+    this.group.add(this.parts.hull.mesh);
   }
 
   addMainEngine(mainEngine: MainEngine) {
-    this.mainEngine = mainEngine;
     this.parts.mainEngine = mainEngine;
-
-    const [x, y, z] = this.hull.mainEngineAttachPoint;
-    this.mainEngine.mesh.position.set(x, y, z);
-    this.group.add(this.mainEngine.mesh);
+    if (this.parts.hull) {
+      const [x, y, z] = this.parts.hull.mainEngineAttachPoint;
+      this.parts.mainEngine.mesh.position.set(x, y, z);
+      this.group.add(this.parts.mainEngine.mesh);
+    }
   }
 
   addSideEngines(sideEngines: SideEngines) {
-    this.sideEngines = sideEngines;
     this.parts.sideEngines = sideEngines;
-    const [x, y, z] = this.hull.sideEngineAttachPoint;
-    this.group.add(this.sideEngines.mesh);
-    this.sideEngines.mesh.position.set(x, y, z);
+    if (this.parts.hull) {
+      const [x, y, z] = this.parts.hull.sideEngineAttachPoint;
+      this.group.add(this.parts.sideEngines.mesh);
+      this.parts.sideEngines.mesh.position.set(x, y, z);
+    }
   }
 
   logParts() {
-    // console.log(this.hull, this.mainEngine, this.sideEngines);
     for (let part in this.parts) {
       console.log(this.parts[part as keyof ShipModelParts]);
     }
   }
 
   moveSideEngines(y: number, z: number) {
-    if (y !== 0) {
-      this.sideEngines.mesh.position.y = y;
-    }
-    if (z !== 0) {
-      this.sideEngines.mesh.position.z = z;
+    if (this.parts.sideEngines) {
+      if (y !== 0) {
+        this.parts.sideEngines.mesh.position.y = y;
+      }
+      if (z !== 0) {
+        this.parts.sideEngines.mesh.position.z = z;
+      }
     }
   }
 
@@ -121,27 +117,8 @@ export class StarshipModel {
       if (part) {
         total += part.mass;
       }
-      //   console.log(part);
-      //   total += part.mass;
     });
-    // console.log(partsValues);
-    // for (let part in this.parts) {
-    //   const partIndex = part as keyof ShipModelParts;
 
-    //   if (this.parts[partIndex]) {
-    //     console.log(this.parts[partIndex]);
-    //     // total += this.parts[partIndex].mass;
-    //   }
-    // }
-    // if (this.hull) {
-    //   total += this.hull.mass;
-    // }
-    // if (this.mainEngine) {
-    //   total += this.mainEngine.mass;
-    // }
-    // if (this.sideEngines) {
-    //   total += this.sideEngines.mass;
-    // }
     return total;
   }
 }
