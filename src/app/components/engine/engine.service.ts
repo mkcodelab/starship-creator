@@ -8,7 +8,7 @@ import {
 import * as THREE from 'three';
 // import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { MainScene } from '../main-scene/main-scene';
+import { MainScene } from '../../3d/main-scene/main-scene';
 
 // figure out how to get dynamic component size
 export const ScreenSize = {

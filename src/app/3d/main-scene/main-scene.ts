@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { ScreenSize } from '../engine/engine.service';
-import { StarshipModel } from '../starship/starship';
+import { ScreenSize } from '../../components/engine/engine.service';
+import { StarshipModel } from '../../components/starship/starship';
 import { Lights } from '../lights/lights';
 
 import { Injectable, inject } from '@angular/core';
-import { CreatorService } from '../creator/creator.service';
+import { CreatorService } from '../../components/creator/creator.service';
 
 @Injectable({
   providedIn: 'root',

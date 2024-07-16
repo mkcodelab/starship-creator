@@ -40,3 +40,5 @@ export const BevelHull = new Hull({
 });
 
 export const HullsArray = [StandardHull, ImprovedHull, HexHull, BevelHull];
+
+// todo: create class responsible for generating mesh, with many methods for adding shapes to bufferGeometry or something
