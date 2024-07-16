@@ -22,6 +22,8 @@ export class CreatorService {
   selectedMainEngine: MainEngine | undefined;
   selectedSideEngines: SideEngines | undefined;
 
+  totalShipMass = 0;
+
   private sideEnginePosition$: BehaviorSubject<{ y: number; z: number }> =
     new BehaviorSubject({ y: 0, z: 0 });
 
@@ -44,7 +46,6 @@ export class CreatorService {
   }
 
   addPart(part: StarshipPart) {
-    // move to service
     if (part instanceof Hull) {
       this.isHullAdded = true;
     }

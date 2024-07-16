@@ -16,11 +16,13 @@ export class Lights {
     this.light = new THREE.AmbientLight(0xffffff, 0.2);
     this.light.position.z = 10;
 
-    this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    this.dirLight.position.set(-5, 5, 10);
+    this.dirLight = new THREE.DirectionalLight(0xffffdd, 1);
+    this.dirLight.position.set(-5, 8, 10);
 
     this.dirLight.lookAt(0, 0, 0);
-    this.dirLight.castShadow = true;
+    // this.dirLight.castShadow = true;
+    this.dirLight.shadow.bias = -0.001;
+    this.dirLight.shadow.normalBias = 0.1;
 
     const dirlightHelper = new THREE.DirectionalLightHelper(this.dirLight);
 

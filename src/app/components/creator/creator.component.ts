@@ -74,4 +74,8 @@ export class CreatorComponent {
   get selectedSideEngines() {
     return this.creatorSvc.selectedSideEngines;
   }
+
+  get totalMass() {
+    return this.creatorSvc.totalShipMass;
+  }
 }

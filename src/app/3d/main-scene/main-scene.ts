@@ -48,6 +48,7 @@ export class MainScene {
 
     this.creatorSvc.creatorServiceEvents$.subscribe((part) => {
       this.starshipModel.addPart(part);
+      this.creatorSvc.totalShipMass = this.starshipModel.totalMass;
     });
   }
 

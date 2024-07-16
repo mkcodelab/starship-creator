@@ -6,24 +6,26 @@ import { SideEngines } from './parts/sideEngine/sideEngine';
 
 export type PartName = 'hull' | 'mainEngine' | 'sideEngines' | 'wings';
 
+export interface ShipModelParts {
+  hull: Hull | undefined;
+  mainEngine: MainEngine | undefined;
+  sideEngines: SideEngines | undefined;
+}
+
 export class StarshipModel {
   // complete starship
   group = new THREE.Group();
 
+  //   remove those props, and use parts object
   hull: Hull;
   mainEngine: MainEngine;
   sideEngines: SideEngines;
 
-  addHull(hull: Hull) {
-    this.hull = hull;
-    this.group.add(this.hull.mesh);
-  }
-
-  //   removeHull() {
-  //     if (this.hull) {
-  //       this.group.remove(this.hull.mesh);
-  //     }
-  //   }
+  parts: ShipModelParts = {
+    hull: undefined,
+    mainEngine: undefined,
+    sideEngines: undefined,
+  };
 
   removePart(part: StarshipPart) {
     switch (true) {
@@ -72,23 +74,34 @@ export class StarshipModel {
     this.group.add(element.mesh);
   }
 
+  addHull(hull: Hull) {
+    this.parts.hull = hull;
+    this.hull = hull;
+    this.group.add(this.hull.mesh);
+  }
+
   addMainEngine(mainEngine: MainEngine) {
     this.mainEngine = mainEngine;
+    this.parts.mainEngine = mainEngine;
 
     const [x, y, z] = this.hull.mainEngineAttachPoint;
     this.mainEngine.mesh.position.set(x, y, z);
     this.group.add(this.mainEngine.mesh);
   }
 
-  logParts() {
-    console.log(this.hull.name, this.mainEngine.name);
-  }
-
   addSideEngines(sideEngines: SideEngines) {
     this.sideEngines = sideEngines;
+    this.parts.sideEngines = sideEngines;
     const [x, y, z] = this.hull.sideEngineAttachPoint;
     this.group.add(this.sideEngines.mesh);
     this.sideEngines.mesh.position.set(x, y, z);
+  }
+
+  logParts() {
+    // console.log(this.hull, this.mainEngine, this.sideEngines);
+    for (let part in this.parts) {
+      console.log(this.parts[part as keyof ShipModelParts]);
+    }
   }
 
   moveSideEngines(y: number, z: number) {
@@ -98,5 +111,37 @@ export class StarshipModel {
     if (z !== 0) {
       this.sideEngines.mesh.position.z = z;
     }
+  }
+
+  get totalMass() {
+    let total = 0;
+    let parts = Object.values(this.parts);
+
+    parts.forEach((part) => {
+      if (part) {
+        total += part.mass;
+      }
+      //   console.log(part);
+      //   total += part.mass;
+    });
+    // console.log(partsValues);
+    // for (let part in this.parts) {
+    //   const partIndex = part as keyof ShipModelParts;
+
+    //   if (this.parts[partIndex]) {
+    //     console.log(this.parts[partIndex]);
+    //     // total += this.parts[partIndex].mass;
+    //   }
+    // }
+    // if (this.hull) {
+    //   total += this.hull.mass;
+    // }
+    // if (this.mainEngine) {
+    //   total += this.mainEngine.mass;
+    // }
+    // if (this.sideEngines) {
+    //   total += this.sideEngines.mass;
+    // }
+    return total;
   }
 }
