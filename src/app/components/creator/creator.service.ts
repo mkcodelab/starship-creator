@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, merge } from 'rxjs';
-import { StarshipPart } from '../starship/parts/abstract.shipPart';
-import { HullsArray } from '../starship/parts/hull/createdHulls';
-import { SideEnginesArray } from '../starship/parts/sideEngine/createdSideEngines';
-import { MainEnginesArray } from '../starship/parts/mainEngine/createdMainEngines';
-import { Hull } from '../starship/parts/hull/hull';
-import { MainEngine } from '../starship/parts/mainEngine/mainEngine';
-import { SideEngines } from '../starship/parts/sideEngine/sideEngine';
+import { HullsArray } from '../../3d/starship/parts/hull/createdHulls';
+import { SideEnginesArray } from '../../3d/starship/parts/sideEngine/createdSideEngines';
+import { MainEnginesArray } from '../../3d/starship/parts/mainEngine/createdMainEngines';
+import { Hull } from '../../3d/starship/parts/hull/hull';
+import { MainEngine } from '../../3d/starship/parts/mainEngine/mainEngine';
+import { SideEngines } from '../../3d/starship/parts/sideEngine/sideEngine';
+import { StarshipPart } from '../../3d/starship/parts/abstract.shipPart';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +44,10 @@ export class CreatorService {
   }
 
   addPart(part: StarshipPart) {
+    // move to service
+    if (part instanceof Hull) {
+      this.isHullAdded = true;
+    }
     this.selectedPart$.next(part);
   }
 

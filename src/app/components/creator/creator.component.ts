@@ -3,9 +3,8 @@ import { EngineComponent } from '../engine/engine.component';
 import { EngineService } from '../engine/engine.service';
 import { CreatorService } from './creator.service';
 import { ModalConfig, ModalService } from '../../services/modal.service';
-import { Hull } from '../starship/parts/hull/hull';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { StarshipPart } from '../starship/parts/abstract.shipPart';
+import { StarshipPart } from '../../3d/starship/parts/abstract.shipPart';
 
 @Component({
   standalone: true,
@@ -35,9 +34,6 @@ export class CreatorComponent {
   }
 
   addPart(part: StarshipPart) {
-    if (part instanceof Hull) {
-      this.creatorSvc.isHullAdded = true;
-    }
     this.creatorSvc.addPart(part);
     this.modalSvc.close();
   }

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { ScreenSize } from '../../components/engine/engine.service';
-import { StarshipModel } from '../../components/starship/starship';
+import { StarshipModel } from '../starship/starship';
 import { Lights } from '../lights/lights';
 
 import { Injectable, inject } from '@angular/core';
