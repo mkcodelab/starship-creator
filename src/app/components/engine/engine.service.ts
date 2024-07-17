@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { MainScene } from '../../3d/main-scene/main-scene';
 
 // figure out how to get dynamic component size
