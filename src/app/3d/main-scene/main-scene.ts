@@ -6,7 +6,6 @@ import { Lights } from '../lights/lights';
 import { Injectable, inject } from '@angular/core';
 import { CreatorService } from '../../components/creator/creator.service';
 import { CorrugatedCopperMaterial } from '../materials/materials';
-import { createTorusesBarrel } from '../../utils/geometries/proceduralGeom';
 
 @Injectable({
   providedIn: 'root',
@@ -116,12 +115,6 @@ export class MainScene {
 
     const mesh = new THREE.Mesh(geom, material);
     mesh.position.set(x, y, z);
-    this.scene.add(mesh);
-  }
-
-  addTorusesBarrel() {
-    const geom = createTorusesBarrel(5);
-    const mesh = new THREE.Mesh(geom, CorrugatedCopperMaterial);
     this.scene.add(mesh);
   }
 }

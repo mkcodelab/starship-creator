@@ -38,11 +38,12 @@ export class Hull extends StarshipPart {
     this.mesh.receiveShadow = true;
     this.mesh.castShadow = true;
 
+    // move rotate to geom generation function
     if (rotate) {
       this.rotate();
     }
   }
-  // maybe move it to ship part abstract class?
+  //   move to geom generation function
   rotate() {
     this.mesh.rotateX(THREE.MathUtils.degToRad(90));
   }

@@ -35,3 +35,7 @@ export const CorrugatedCopperMaterial = new THREE.MeshStandardMaterial({
   roughness: 0.3,
   flatShading: true,
 });
+
+export const DefaultMaterial = new THREE.MeshBasicMaterial({
+  color: 0xcccccc,
+});

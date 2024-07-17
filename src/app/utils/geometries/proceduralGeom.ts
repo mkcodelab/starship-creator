@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
+import { BasicSteelMaterial } from '../../3d/materials/materials';
 
 // add some weird parameters here for customization
 export function generateSideEngineGeom(): THREE.BufferGeometry {
@@ -43,16 +44,20 @@ export function createExtrudeGeom(
   return geom;
 }
 // add more parameters
-export function createTorusesBarrel(quantity: number): THREE.BufferGeometry {
+export function createTorusBarrel(
+  quantity: number,
+  tubeThickness: number,
+  spread: number
+): THREE.BufferGeometry {
   const toruses = [];
   for (let i = 0; i < quantity; i++) {
-    const torus = new THREE.TorusGeometry(0.5, 0.2, 6, 6);
-    torus.translate(0, 0, i / 4);
+    const torus = new THREE.TorusGeometry(0.5, tubeThickness, 6, 6);
+    torus.translate(0, 0, i / spread);
     toruses.push(torus);
   }
 
   const mergedGeom = mergeGeometries(toruses);
-  mergedGeom.translate(0, 0, -2);
+  //   mergedGeom.translate(0, 0, -2);
   return mergedGeom;
 }
 
@@ -72,4 +77,28 @@ export function createTrapezoid() {
   trapezoid.rotateZ(THREE.MathUtils.degToRad(90));
   trapezoid.translate(0, 0, -height / 10);
   return trapezoid;
+}
+
+// testing standard engine group mesh
+// procedurally generated meshes are added to group that is returned
+// doing so, we can have multiple materials on element
+export function generateStandardEngine() {
+  const torus = createTorusBarrel(4, 0.2, 4);
+  const cylinder = new THREE.CylinderGeometry(0.3, 0.3, 0.4);
+
+  const torusMesh = new THREE.Mesh(torus, BasicSteelMaterial);
+  const cylinderMesh = new THREE.Mesh(
+    cylinder,
+    new THREE.MeshPhongMaterial({
+      color: 0xff8822,
+      emissive: 0xff8822,
+      emissiveIntensity: 0.5,
+    })
+  );
+
+  cylinderMesh.rotateX(THREE.MathUtils.degToRad(90));
+
+  const group = new THREE.Group();
+  group.add(torusMesh, cylinderMesh);
+  return group;
 }

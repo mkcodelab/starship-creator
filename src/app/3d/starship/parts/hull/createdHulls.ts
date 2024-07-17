@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Hull } from './hull';
 import {
   createExtrudeGeom,
-  createTorusesBarrel,
+  createTorusBarrel,
   createTrapezoid,
 } from '../../../../utils/geometries/proceduralGeom';
 
@@ -48,7 +48,7 @@ export const BevelHull = new Hull({
 export const TorusHull = new Hull({
   name: 'Torus Hull',
   hpModifier: 100,
-  geom: createTorusesBarrel(10),
+  geom: createTorusBarrel(10, 0.4, 4),
   material: CorrugatedCopperMaterial,
   mass: 150,
 });
