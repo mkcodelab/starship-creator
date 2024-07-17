@@ -42,3 +42,34 @@ export function createExtrudeGeom(
   geom.translate(-length / 2, 0, -depth / 2);
   return geom;
 }
+// add more parameters
+export function createTorusesBarrel(quantity: number): THREE.BufferGeometry {
+  const toruses = [];
+  for (let i = 0; i < quantity; i++) {
+    const torus = new THREE.TorusGeometry(0.5, 0.2, 6, 6);
+    torus.translate(0, 0, i / 4);
+    toruses.push(torus);
+  }
+
+  const mergedGeom = mergeGeometries(toruses);
+  mergedGeom.translate(0, 0, -2);
+  return mergedGeom;
+}
+
+export function createTrapezoid() {
+  const height = 3;
+  const trapezoid = new THREE.CylinderGeometry(
+    0.3,
+    0.6,
+    height,
+    3,
+    2,
+    false,
+    0,
+    Math.PI
+  );
+  trapezoid.rotateX(THREE.MathUtils.degToRad(90));
+  trapezoid.rotateZ(THREE.MathUtils.degToRad(90));
+  trapezoid.translate(0, 0, -height / 10);
+  return trapezoid;
+}

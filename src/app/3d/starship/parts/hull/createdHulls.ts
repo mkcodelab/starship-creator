@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { Hull } from './hull';
-import { createExtrudeGeom } from '../../../../utils/geometries/proceduralGeom';
+import {
+  createExtrudeGeom,
+  createTorusesBarrel,
+  createTrapezoid,
+} from '../../../../utils/geometries/proceduralGeom';
 
 import {
   AlienMetalMaterial,
@@ -41,6 +45,28 @@ export const BevelHull = new Hull({
   mass: 230,
 });
 
-export const HullsArray = [StandardHull, ImprovedHull, HexHull, BevelHull];
+export const TorusHull = new Hull({
+  name: 'Torus Hull',
+  hpModifier: 100,
+  geom: createTorusesBarrel(10),
+  material: CorrugatedCopperMaterial,
+  mass: 150,
+});
+
+export const TrapezoidHull = new Hull({
+  name: 'Trapezoid',
+  hpModifier: 20,
+  geom: createTrapezoid(),
+  material: BasicSteelMaterial,
+});
+
+export const HullsArray = [
+  StandardHull,
+  ImprovedHull,
+  HexHull,
+  BevelHull,
+  TorusHull,
+  TrapezoidHull,
+];
 
 // todo: create class responsible for generating mesh, with many methods for adding shapes to bufferGeometry or something

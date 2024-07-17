@@ -14,6 +14,7 @@ export const BasicSteelMaterial = new THREE.MeshStandardMaterial({
   normalMap: basicSteelTextureNormalMap,
   // roughnessMap: generatedTextureMap,
   //   bumpMap: generatedTextureMap,
+  flatShading: true,
 });
 
 export const AlienMetalMaterial = new THREE.MeshStandardMaterial({
