@@ -17,9 +17,10 @@ export const StandardHull = new Hull({
 
 export const ImprovedHull = new Hull({
   name: 'Improved Hull',
-  hpModifier: 50,
+  hpModifier: 90,
   geom: new THREE.BoxGeometry(1, 2, 4),
   material: AlienMetalMaterial,
+  mass: 300,
 });
 
 export const HexHull = new Hull(
@@ -37,6 +38,7 @@ export const BevelHull = new Hull({
   hpModifier: 60,
   geom: createExtrudeGeom(0.4, 1, 3),
   material: CorrugatedCopperMaterial,
+  mass: 230,
 });
 
 export const HullsArray = [StandardHull, ImprovedHull, HexHull, BevelHull];

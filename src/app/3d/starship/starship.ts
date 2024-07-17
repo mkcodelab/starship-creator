@@ -4,8 +4,6 @@ import { MainEngine } from './parts/mainEngine/mainEngine';
 import { StarshipPart } from './parts/abstract.shipPart';
 import { SideEngines } from './parts/sideEngine/sideEngine';
 
-export type PartName = 'hull' | 'mainEngine' | 'sideEngines' | 'wings';
-
 export interface ShipModelParts {
   hull: Hull | undefined;
   mainEngine: MainEngine | undefined;
@@ -87,8 +85,8 @@ export class StarshipModel {
     this.parts.sideEngines = sideEngines;
     if (this.parts.hull) {
       const [x, y, z] = this.parts.hull.sideEngineAttachPoint;
-      this.group.add(this.parts.sideEngines.mesh);
       this.parts.sideEngines.mesh.position.set(x, y, z);
+      this.group.add(this.parts.sideEngines.mesh);
     }
   }
 
@@ -110,15 +108,11 @@ export class StarshipModel {
   }
 
   get totalMass() {
-    let total = 0;
-    let parts = Object.values(this.parts);
-
-    parts.forEach((part) => {
+    return Object.values(this.parts).reduce((total, part) => {
       if (part) {
         total += part.mass;
       }
-    });
-
-    return total;
+      return total;
+    }, 0);
   }
 }

@@ -6,7 +6,6 @@ import {
   inject,
 } from '@angular/core';
 import * as THREE from 'three';
-// import { ArcballControls } from 'three/examples/jsm/controls/ArcballControls';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../../3d/main-scene/main-scene';
 
@@ -22,11 +21,11 @@ export const ScreenSize = {
 @Injectable({ providedIn: 'root' })
 export class EngineService implements OnDestroy {
   private canvas: HTMLCanvasElement;
+
   private renderer: THREE.WebGLRenderer;
-  //   private mainScene: MainScene;
+
   private mainScene = inject(MainScene);
 
-  //   private arcBallControls: ArcballControls;
   private orbitControls: OrbitControls;
 
   public cubeRotation = true;
@@ -60,9 +59,6 @@ export class EngineService implements OnDestroy {
     this.renderer.setSize(ScreenSize.width, ScreenSize.height);
 
     this.renderer.setClearColor(0xbdac7e);
-
-    // create the scene
-    // this.mainScene = new MainScene();
 
     this.initOrbitControls();
   }
@@ -99,19 +95,7 @@ export class EngineService implements OnDestroy {
     this.renderer.setSize(ScreenSize.width, ScreenSize.height);
   }
 
-  //   initArcballControls() {
-  //     this.arcBallControls = new ArcballControls(
-  //       this.camera,
-  //       this.canvas,
-  //       this.scene
-  //     );
-  //   }
-
   initOrbitControls() {
     this.orbitControls = new OrbitControls(this.mainScene.camera, this.canvas);
-  }
-
-  moveSpotlight(value: number) {
-    this.mainScene.moveSpotlight(value);
   }
 }

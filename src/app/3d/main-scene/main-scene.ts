@@ -5,6 +5,7 @@ import { Lights } from '../lights/lights';
 
 import { Injectable, inject } from '@angular/core';
 import { CreatorService } from '../../components/creator/creator.service';
+import { CorrugatedCopperMaterial } from '../materials/materials';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +29,8 @@ export class MainScene {
     this.camera.position.set(2, 2, 2);
     this.scene.add(this.camera);
 
-    const axesHelper = new THREE.AxesHelper(10);
-    this.scene.add(axesHelper);
+    // const axesHelper = new THREE.AxesHelper(10);
+    // this.scene.add(axesHelper);
 
     this.createSkybox();
 
@@ -78,8 +79,11 @@ export class MainScene {
 
   createBasePlate() {
     const basePlateGeometry = new THREE.CylinderGeometry(5, 5.5, 0.2);
-    const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
-    this.basePlate = new THREE.Mesh(basePlateGeometry, basePlateMaterial);
+    // const basePlateMaterial = new THREE.MeshPhongMaterial({ color: 0xababab });
+    this.basePlate = new THREE.Mesh(
+      basePlateGeometry,
+      CorrugatedCopperMaterial
+    );
     this.basePlate.receiveShadow = true;
     this.scene.add(this.basePlate);
   }

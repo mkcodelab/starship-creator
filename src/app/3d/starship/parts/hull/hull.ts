@@ -5,6 +5,7 @@ export interface HullConfig extends ShipPartConfig {
   hpModifier: number;
   geom: THREE.BufferGeometry;
   material: THREE.Material;
+  mass?: number;
 }
 
 export class Hull extends StarshipPart {
@@ -13,7 +14,7 @@ export class Hull extends StarshipPart {
   material: THREE.Material;
   mesh: THREE.Mesh;
 
-  mass = 200;
+  mass: number;
 
   //   attach points, i guess we need to define them separately for every hull created...
   //   move them to constructor
@@ -28,6 +29,7 @@ export class Hull extends StarshipPart {
   //    example: to rotate cylindrical shaped hull
   constructor(hullConfig: HullConfig, rotate?: boolean) {
     super(hullConfig);
+    this.mass = hullConfig.mass ?? 200;
     this.baseHP += hullConfig.hpModifier;
     this.geom = hullConfig.geom;
     this.material = hullConfig.material;

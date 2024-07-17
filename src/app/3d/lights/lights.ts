@@ -42,8 +42,8 @@ export class Lights {
       this.light,
       this.spotlight,
       this.spotlight2,
-      this.dirLight,
-      dirlightHelper
+      this.dirLight
+      //   dirlightHelper
     );
   }
 

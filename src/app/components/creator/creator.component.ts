@@ -26,7 +26,8 @@ export class CreatorComponent {
   modalSvc = inject(ModalService);
 
   moveSpotlight(value: number) {
-    this.engineSvc.moveSpotlight(value);
+    // move to creatorSvc
+    // this.engineSvc.moveSpotlight(value);
   }
 
   moveSideEngine(y: number, z: number) {
