@@ -44,13 +44,13 @@ export abstract class GeneratedTexture {
   }
 }
 
-// todo: extract some of drawing functions and use them in generate function implementation
+// todo: maybe those classes should generate object with THREE.CanvasTexture instead of just canvas
 
 export class CirclesTexture extends GeneratedTexture {
   generate(): void {
     if (this.ctx) {
       simpleNoise(this.ctx, 0.5);
-      circlePattern(this.ctx, 1000);
+      circlePattern(this.ctx, 1000, true);
     }
   }
 }
@@ -59,7 +59,7 @@ export class MetalTexture extends GeneratedTexture {
   generate(): void {
     if (this.ctx) {
       simpleNoise(this.ctx, 0.9);
-      squarePatternRender(this.ctx, 400, 10);
+      squarePatternRender(this.ctx, 1000, 10, false, 4);
     }
   }
 }

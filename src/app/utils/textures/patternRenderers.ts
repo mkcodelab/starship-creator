@@ -1,7 +1,9 @@
 export function squarePatternRender(
   ctx: CanvasRenderingContext2D,
   quantity: number,
-  offset: number
+  offset: number,
+  filled?: boolean,
+  lineWidth?: number
 ) {
   for (let i = 0; i < quantity; i++) {
     const sizeFluct = 60;
@@ -11,12 +13,25 @@ export function squarePatternRender(
     let light = Math.floor(Math.random() * 60 + 40);
     let col = `hsla(0, 0%, ${light}%, 1)`;
 
-    ctx.fillStyle = col;
-    ctx.fillRect(x, y, size * 2, size * 2);
+    if (filled) {
+      ctx.fillStyle = col;
+      ctx.fillRect(x, y, size * 2, size * 2);
+    } else {
+      if (lineWidth) {
+        ctx.lineWidth = lineWidth;
+      }
+      ctx.strokeStyle = col;
+      ctx.strokeRect(x, y, size * 2, size * 2);
+    }
   }
 }
 
-export function circlePattern(ctx: CanvasRenderingContext2D, quantity: number) {
+export function circlePattern(
+  ctx: CanvasRenderingContext2D,
+  quantity: number,
+  filled?: boolean,
+  lineWidth?: number
+) {
   for (let i = 0; i < quantity; i++) {
     const sizeFluct = 30;
     let x = Math.random() * ctx.canvas.width;
@@ -27,10 +42,18 @@ export function circlePattern(ctx: CanvasRenderingContext2D, quantity: number) {
 
     let col = `hsla(0, 0%, ${light}%, 1)`;
 
-    ctx.fillStyle = col;
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fill();
+
+    if (filled) {
+      ctx.fillStyle = col;
+      ctx.fill();
+    } else {
+      if (lineWidth) {
+        ctx.lineWidth = lineWidth;
+      }
+      ctx.stroke();
+    }
     ctx.closePath();
   }
 }
