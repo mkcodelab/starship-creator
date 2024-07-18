@@ -10,6 +10,8 @@ import {
   AlienMetalMaterial,
   BasicSteelMaterial,
   CorrugatedCopperMaterial,
+  PerlinTextureMaterial,
+  PerlinTextureMaterial2,
 } from '../../../../3d/materials/materials';
 
 export const StandardHull = new Hull({
@@ -40,7 +42,7 @@ export const HexHull = new Hull(
 export const BevelHull = new Hull({
   name: 'Bevel Hull',
   hpModifier: 60,
-  geom: createExtrudeGeom(0.4, 1, 3),
+  geom: createExtrudeGeom(0.4, 1, 2),
   material: CorrugatedCopperMaterial,
   mass: 230,
 });
@@ -57,7 +59,8 @@ export const TrapezoidHull = new Hull({
   name: 'Trapezoid',
   hpModifier: 20,
   geom: createTrapezoid(),
-  material: BasicSteelMaterial,
+  //   material: BasicSteelMaterial,
+  material: PerlinTextureMaterial2,
 });
 
 export const HullsArray = [

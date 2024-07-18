@@ -1,5 +1,5 @@
 // noise value between 0 and 1
-export function noise(ctx: CanvasRenderingContext2D, noiseValue: number) {
+export function simpleNoise(ctx: CanvasRenderingContext2D, noiseValue: number) {
   const w = ctx.canvas.width,
     h = ctx.canvas.height,
     iData = ctx.createImageData(w, h),

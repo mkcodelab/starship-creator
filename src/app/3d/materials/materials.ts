@@ -4,6 +4,10 @@ import {
   basicSteelTextureNormalMap,
   circleTextureTestMap,
   circleTextureTestNormalMap,
+  perlinTextureMap,
+  perlinTextureMap2,
+  perlinTextureNormalMap,
+  perlinTextureNormalMap2,
 } from '../../utils/textures/generatedTextures';
 
 export const BasicSteelMaterial = new THREE.MeshStandardMaterial({
@@ -34,6 +38,22 @@ export const CorrugatedCopperMaterial = new THREE.MeshStandardMaterial({
   metalness: 0.8,
   roughness: 0.3,
   flatShading: true,
+});
+
+export const PerlinTextureMaterial = new THREE.MeshStandardMaterial({
+  map: perlinTextureMap,
+  normalMap: perlinTextureNormalMap,
+  color: 0xccccff,
+  metalness: 0.8,
+  roughness: 0.2,
+});
+
+export const PerlinTextureMaterial2 = new THREE.MeshStandardMaterial({
+  map: perlinTextureMap2,
+  normalMap: perlinTextureNormalMap2,
+  color: 0xccccff,
+  metalness: 0.5,
+  roughness: 0.2,
 });
 
 export const DefaultMaterial = new THREE.MeshBasicMaterial({
