@@ -79,6 +79,20 @@ export function createTrapezoid() {
   return trapezoid;
 }
 
+// add params for material / multiple materials etc...
+export function createHexHull(material: THREE.Material) {
+  const cylinder = new THREE.CylinderGeometry(0.5, 0.8, 4, 6);
+
+  const cylinderMesh = new THREE.Mesh(cylinder, material);
+
+  cylinderMesh.rotateX(THREE.MathUtils.degToRad(90));
+  cylinderMesh.rotateY(THREE.MathUtils.degToRad(30));
+
+  const group = new THREE.Group();
+  group.add(cylinderMesh);
+  return group;
+}
+
 // testing standard engine group mesh
 // procedurally generated meshes are added to group that is returned
 // doing so, we can have multiple materials on element

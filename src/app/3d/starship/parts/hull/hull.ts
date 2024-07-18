@@ -1,12 +1,17 @@
 import * as THREE from 'three';
 import { ShipPartConfig, StarshipPart } from '../abstract.shipPart';
 
+// geom and material should be optional / deleted
+// we should generate geometries via generation function and add them to group.
 export interface HullConfig extends ShipPartConfig {
   hpModifier: number;
   geom: THREE.BufferGeometry;
   material: THREE.Material;
-  mainEngineAttachPoint?: THREE.Vector3;
+  group?: THREE.Group;
   mass?: number;
+  mainEngineAttachPoint?: THREE.Vector3;
+  wingsAttachPoint?: THREE.Vector3;
+  sideEnginesAttachPoint?: THREE.Vector3;
 }
 
 export class Hull extends StarshipPart {
@@ -15,44 +20,38 @@ export class Hull extends StarshipPart {
   material: THREE.Material;
   mesh: THREE.Mesh;
 
+  group: THREE.Group;
+
   mass: number;
 
-  //   attach points, i guess we need to define them separately for every hull created...
-  //   move them to constructor
   wingsAttachPoint: THREE.Vector3;
   mainEngineAttachPoint: THREE.Vector3;
-
-  sideEngineAttachPoint = new THREE.Vector3(0, 0, -1);
+  sideEnginesAttachPoint: THREE.Vector3;
 
   //   stats
   baseHP = 100;
-  // add modification function for different geometries
-  //    example: to rotate cylindrical shaped hull
-  constructor(hullConfig: HullConfig, rotate?: boolean) {
-    super(hullConfig);
-    this.mass = hullConfig.mass ?? 200;
-    this.baseHP += hullConfig.hpModifier;
-    this.geom = hullConfig.geom;
-    this.material = hullConfig.material;
 
-    if (hullConfig.mainEngineAttachPoint) {
-      this.mainEngineAttachPoint = hullConfig.mainEngineAttachPoint;
-    } else {
-      this.mainEngineAttachPoint = new THREE.Vector3(0, 0, -2);
+  constructor(config: HullConfig) {
+    super(config);
+    this.mass = config.mass ?? 200;
+    this.baseHP += config.hpModifier;
+    this.geom = config.geom;
+    this.material = config.material;
+
+    this.mainEngineAttachPoint =
+      config.mainEngineAttachPoint ?? new THREE.Vector3(0, 0, -2);
+
+    this.sideEnginesAttachPoint =
+      config.sideEnginesAttachPoint ?? new THREE.Vector3(0, 0, -1);
+
+    //   group adding must be updated in starship.ts at corresponding method
+    if (config.group) {
+      this.group = config.group;
     }
 
     this.mesh = new THREE.Mesh(this.geom, this.material);
 
     this.mesh.receiveShadow = true;
     this.mesh.castShadow = true;
-
-    // move rotate to geom generation function
-    if (rotate) {
-      this.rotate();
-    }
-  }
-  //   move to geom generation function
-  rotate() {
-    this.mesh.rotateX(THREE.MathUtils.degToRad(90));
   }
 }

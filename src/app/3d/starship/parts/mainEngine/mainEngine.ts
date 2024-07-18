@@ -14,7 +14,6 @@ export interface MainEngineConfig extends ShipPartConfig {
 }
 
 export class MainEngine extends StarshipPart {
-  //   geom = new THREE.CylinderGeometry(0.5, 0.5, 0.5);
   geom: THREE.BufferGeometry;
 
   material: THREE.Material;
@@ -23,13 +22,6 @@ export class MainEngine extends StarshipPart {
   mass = 50;
 
   group: THREE.Group;
-
-  //   material = new THREE.MeshPhongMaterial({
-  //     color: 0xccccff,
-  //     emissive: 0x333388,
-  //   });
-
-  //   mesh = new THREE.Mesh(this.geom, this.material);
 
   constructor(config: MainEngineConfig) {
     super(config);

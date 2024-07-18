@@ -25,6 +25,7 @@ export class StarshipModel {
       case part instanceof Hull:
         if (this.parts.hull) {
           this.group.remove(this.parts.hull.mesh);
+          this.group.remove(this.parts.hull.group);
         }
         break;
       case part instanceof SideEngines:
@@ -71,24 +72,29 @@ export class StarshipModel {
 
   addHull(hull: Hull) {
     this.parts.hull = hull;
-    this.group.add(this.parts.hull.mesh);
+    const _hull = this.parts.hull;
+    if (_hull.group) {
+      this.group.add(_hull.group);
+    } else {
+      this.group.add(_hull.mesh);
+    }
   }
 
   addMainEngine(mainEngine: MainEngine) {
     this.parts.mainEngine = mainEngine;
     if (this.parts.hull) {
-      const mainEngine = this.parts.mainEngine;
+      const _mainEngine = this.parts.mainEngine;
 
       const [x, y, z] = this.parts.hull.mainEngineAttachPoint;
       //   later we will remove single mesh, and use only groups for all elements of spaceship
       //   if created engine is made of group of objects
-      if (mainEngine.group) {
-        this.group.add(mainEngine.group);
-        mainEngine.group.position.set(x, y, z);
+      if (_mainEngine.group) {
+        this.group.add(_mainEngine.group);
+        _mainEngine.group.position.set(x, y, z);
         // if its created of single mesh
       } else {
-        mainEngine.mesh.position.set(x, y, z);
-        this.group.add(mainEngine.mesh);
+        _mainEngine.mesh.position.set(x, y, z);
+        this.group.add(_mainEngine.mesh);
       }
     }
   }
@@ -96,7 +102,7 @@ export class StarshipModel {
   addSideEngines(sideEngines: SideEngines) {
     this.parts.sideEngines = sideEngines;
     if (this.parts.hull) {
-      const [x, y, z] = this.parts.hull.sideEngineAttachPoint;
+      const [x, y, z] = this.parts.hull.sideEnginesAttachPoint;
       this.parts.sideEngines.mesh.position.set(x, y, z);
       this.group.add(this.parts.sideEngines.mesh);
     }
