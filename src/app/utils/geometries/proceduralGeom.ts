@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { degToRad } from 'three/src/math/MathUtils';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
 import { BasicSteelMaterial } from '../../3d/materials/materials';
 
@@ -73,20 +74,21 @@ export function createTrapezoid() {
     0,
     Math.PI
   );
-  trapezoid.rotateX(THREE.MathUtils.degToRad(90));
-  trapezoid.rotateZ(THREE.MathUtils.degToRad(90));
+  trapezoid.rotateX(degToRad(90));
+  trapezoid.rotateZ(degToRad(90));
   trapezoid.translate(0, 0, -height / 10);
+
   return trapezoid;
 }
 
 // add params for material / multiple materials etc...
-export function createHexHull(material: THREE.Material) {
+export function createHexHull(material: THREE.Material): THREE.Group {
   const cylinder = new THREE.CylinderGeometry(0.5, 0.8, 4, 6);
 
   const cylinderMesh = new THREE.Mesh(cylinder, material);
 
-  cylinderMesh.rotateX(THREE.MathUtils.degToRad(90));
-  cylinderMesh.rotateY(THREE.MathUtils.degToRad(30));
+  cylinderMesh.rotateX(degToRad(90));
+  cylinderMesh.rotateY(degToRad(30));
 
   const group = new THREE.Group();
   group.add(cylinderMesh);
@@ -96,7 +98,7 @@ export function createHexHull(material: THREE.Material) {
 // testing standard engine group mesh
 // procedurally generated meshes are added to group that is returned
 // doing so, we can have multiple materials on element
-export function generateStandardEngine() {
+export function generateStandardEngine(): THREE.Group {
   const torus = createTorusBarrel(4, 0.2, 0.3);
   const cylinder = new THREE.CylinderGeometry(0.3, 0.3, 0.4);
 
@@ -110,9 +112,44 @@ export function generateStandardEngine() {
     })
   );
 
-  cylinderMesh.rotateX(THREE.MathUtils.degToRad(90));
+  cylinderMesh.rotateX(degToRad(90));
 
   const group = new THREE.Group();
   group.add(torusMesh, cylinderMesh);
   return group;
 }
+
+export function createTripleEngine(material: THREE.Material): THREE.Group {
+  const spread = 0.3;
+  const barrelLength = 1;
+  const leftGeom = new THREE.CylinderGeometry(0.2, 0.2, barrelLength);
+  leftGeom.translate(spread, 0, 0);
+
+  const rightGeom = new THREE.CylinderGeometry(0.2, 0.2, barrelLength);
+  rightGeom.translate(-spread, 0, 0);
+
+  const bottomGeom = new THREE.CylinderGeometry(0.2, 0.2, barrelLength);
+  bottomGeom.translate(0, 0, -spread);
+
+  const engineHull = new THREE.CylinderGeometry(0.6, 0.6, 0.3, 6);
+  engineHull.translate(0, 0, -0.1);
+
+  const mergedCylinderGeoms = mergeGeometries([
+    leftGeom,
+    rightGeom,
+    bottomGeom,
+    engineHull,
+  ]);
+
+  const cylindersMesh = new THREE.Mesh(mergedCylinderGeoms, material);
+
+  const group = new THREE.Group();
+  group.add(cylindersMesh);
+
+  group.rotateX(degToRad(90));
+  return group;
+}
+
+// function deg2rad(deg: number) {
+//   return (deg * Math.PI) / 180;
+// }

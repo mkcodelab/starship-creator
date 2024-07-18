@@ -1,5 +1,6 @@
 import {
   createTorusBarrel,
+  createTripleEngine,
   generateStandardEngine,
 } from '../../../../utils/geometries/proceduralGeom';
 import {
@@ -8,17 +9,22 @@ import {
 } from '../../../materials/materials';
 import { MainEngine } from './mainEngine';
 
-export const StandardMainEngine = new MainEngine({
-  name: 'Standard Main Engine',
-  geom: createTorusBarrel(2, 0.2, 0.4),
-  material: BasicSteelMaterial,
-});
+export const MainEnginesArray = [
+  new MainEngine({
+    name: 'Standard Main Engine',
+    geom: createTorusBarrel(2, 0.2, 0.4),
+    material: BasicSteelMaterial,
+  }),
 
-export const TestMainEngine = new MainEngine({
-  name: 'testEngine',
-  geom: createTorusBarrel(4, 0.2, 0.4),
-  material: DefaultMaterial,
-  group: generateStandardEngine(),
-});
+  new MainEngine({
+    name: 'testEngine',
+    geom: createTorusBarrel(4, 0.2, 0.4),
+    material: DefaultMaterial,
+    group: generateStandardEngine(),
+  }),
 
-export const MainEnginesArray = [StandardMainEngine, TestMainEngine];
+  new MainEngine({
+    name: 'Triple Engine',
+    group: createTripleEngine(BasicSteelMaterial),
+  }),
+];

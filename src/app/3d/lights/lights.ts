@@ -38,11 +38,15 @@ export class Lights {
 
     this.spotlight.lookAt(0, 0, 0);
 
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(0, 1, -4);
+
     this.lightsGroup.add(
       this.light,
       this.spotlight,
       this.spotlight2,
-      this.dirLight
+      this.dirLight,
+      pointLight
       //   dirlightHelper
     );
   }

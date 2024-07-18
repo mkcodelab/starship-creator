@@ -6,8 +6,8 @@ import { ShipPartConfig, StarshipPart } from '../abstract.shipPart';
 
 export interface MainEngineConfig extends ShipPartConfig {
   // mesh instead of geom, we will be creating whole mesh here
-  geom: THREE.BufferGeometry;
-  material: THREE.Material;
+  geom?: THREE.BufferGeometry;
+  material?: THREE.Material;
   group?: THREE.Group;
   speed?: number;
   mass?: number;
@@ -29,9 +29,12 @@ export class MainEngine extends StarshipPart {
     if (config.group) {
       this.group = config.group;
     }
-
-    this.geom = config.geom;
-    this.material = config.material;
+    if (config.geom) {
+      this.geom = config.geom;
+    }
+    if (config.material) {
+      this.material = config.material;
+    }
     this.mesh = new THREE.Mesh(this.geom, this.material);
 
     this.mesh.receiveShadow = true;
