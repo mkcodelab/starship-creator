@@ -5,6 +5,7 @@ export interface HullConfig extends ShipPartConfig {
   hpModifier: number;
   geom: THREE.BufferGeometry;
   material: THREE.Material;
+  mainEngineAttachPoint?: THREE.Vector3;
   mass?: number;
 }
 
@@ -19,7 +20,7 @@ export class Hull extends StarshipPart {
   //   attach points, i guess we need to define them separately for every hull created...
   //   move them to constructor
   wingsAttachPoint: THREE.Vector3;
-  mainEngineAttachPoint = new THREE.Vector3(0, 0, -2);
+  mainEngineAttachPoint: THREE.Vector3;
 
   sideEngineAttachPoint = new THREE.Vector3(0, 0, -1);
 
@@ -33,6 +34,13 @@ export class Hull extends StarshipPart {
     this.baseHP += hullConfig.hpModifier;
     this.geom = hullConfig.geom;
     this.material = hullConfig.material;
+
+    if (hullConfig.mainEngineAttachPoint) {
+      this.mainEngineAttachPoint = hullConfig.mainEngineAttachPoint;
+    } else {
+      this.mainEngineAttachPoint = new THREE.Vector3(0, 0, -2);
+    }
+
     this.mesh = new THREE.Mesh(this.geom, this.material);
 
     this.mesh.receiveShadow = true;

@@ -44,14 +44,16 @@ export const BevelHull = new Hull({
   hpModifier: 60,
   geom: createExtrudeGeom(0.4, 1, 2),
   material: CorrugatedCopperMaterial,
+  mainEngineAttachPoint: new THREE.Vector3(0, 0, -2.5),
   mass: 230,
 });
 
 export const TorusHull = new Hull({
   name: 'Torus Hull',
   hpModifier: 100,
-  geom: createTorusBarrel(10, 0.4, 4),
+  geom: createTorusBarrel(10, 0.4, 0.4),
   material: CorrugatedCopperMaterial,
+  mainEngineAttachPoint: new THREE.Vector3(0, 0, -2),
   mass: 150,
 });
 

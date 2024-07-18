@@ -10,13 +10,13 @@ import { MainEngine } from './mainEngine';
 
 export const StandardMainEngine = new MainEngine({
   name: 'Standard Main Engine',
-  geom: createTorusBarrel(4, 0.2, 4),
+  geom: createTorusBarrel(2, 0.2, 0.4),
   material: BasicSteelMaterial,
 });
 
 export const TestMainEngine = new MainEngine({
   name: 'testEngine',
-  geom: createTorusBarrel(4, 0.2, 4),
+  geom: createTorusBarrel(4, 0.2, 0.4),
   material: DefaultMaterial,
   group: generateStandardEngine(),
 });

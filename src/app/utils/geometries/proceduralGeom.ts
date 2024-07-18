@@ -52,7 +52,7 @@ export function createTorusBarrel(
   const toruses = [];
   for (let i = 0; i < quantity; i++) {
     const torus = new THREE.TorusGeometry(0.5, tubeThickness, 6, 6);
-    torus.translate(0, 0, i / spread);
+    torus.translate(0, 0, i * spread);
     toruses.push(torus);
   }
 
@@ -83,7 +83,7 @@ export function createTrapezoid() {
 // procedurally generated meshes are added to group that is returned
 // doing so, we can have multiple materials on element
 export function generateStandardEngine() {
-  const torus = createTorusBarrel(4, 0.2, 4);
+  const torus = createTorusBarrel(4, 0.2, 0.3);
   const cylinder = new THREE.CylinderGeometry(0.3, 0.3, 0.4);
 
   const torusMesh = new THREE.Mesh(torus, BasicSteelMaterial);
