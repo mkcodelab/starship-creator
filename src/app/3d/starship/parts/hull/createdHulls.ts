@@ -13,6 +13,7 @@ import {
   CorrugatedCopperMaterial,
   PerlinTextureMaterial,
   PerlinTextureMaterial2,
+  TestStandardMaterial,
 } from '../../../../3d/materials/materials';
 
 export const HullsArray = [
@@ -28,6 +29,7 @@ export const HullsArray = [
     hpModifier: 90,
     geom: new THREE.BoxGeometry(1, 2, 4),
     material: AlienMetalMaterial,
+    // material: TestStandardMaterial,
     mass: 300,
   }),
 
